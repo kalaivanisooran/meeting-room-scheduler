@@ -11,15 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +26,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({ "id", "usrEmpId", "fullName", "status", "creadtedDate", "role", "refreshToken" })
 @Entity
 @Table(name = "USER_INFO")
 @Getter
@@ -55,7 +57,7 @@ public class UserInfo implements UserDetails{
 	@Size(max = 50)
 	private String fullName;
 
-	@JsonIgnore
+	//@JsonIgnore
 	@Column(name = "PASSWORD", nullable = false)
 	private String password;
 
@@ -63,7 +65,7 @@ public class UserInfo implements UserDetails{
 	private Boolean status;
 
 	@Column(name = "CREATED_DATE")
-	@Temporal(TemporalType.DATE)
+	//@Temporal(TemporalType.DATE)
 	private Date creadtedDate;
 
 	@Column(name = "ROLE")
