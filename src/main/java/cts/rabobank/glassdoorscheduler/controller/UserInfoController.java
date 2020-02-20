@@ -34,7 +34,7 @@ public class UserInfoController {
 		return new ResponseEntity<List<UserInfo>>(users, HttpStatus.OK);
 	}
 
-	// -------------------Retrieve Single User-----------------------------
+	// -------------------Retrieve Single User----------------------------------
 
 	@RequestMapping(value = "/fetchuser/{userid}", method = RequestMethod.GET)
 	public ResponseEntity<?> getUser(@PathVariable("userid") String userid) {
@@ -47,5 +47,6 @@ public class UserInfoController {
 					HttpStatus.NOT_ACCEPTABLE);// 417
 		}
 		return new ResponseEntity<UserInfo>(user, HttpStatus.OK);
+		
 	}
 }
