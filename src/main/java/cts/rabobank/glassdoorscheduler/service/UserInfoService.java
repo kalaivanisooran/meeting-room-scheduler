@@ -43,12 +43,16 @@ public class UserInfoService implements UserDetailsService {
 	public void saveUser(UserInfo user) {
 		userInfoRepo.save(user);
 	}
+	
+	public UserInfo findByUserName(String usrEmpId) {
+		return userInfoRepo.findByUsrEmpId(usrEmpId);
+	}
 
 	public boolean isUserExist(UserInfo user) {
 		boolean isUserAvail = false;
-		if (user.getUsrEmpId() != null) {
-			return isUserAvail;
-		}
+		//if (user.getUsrEmpId() != null) {
+		//	return isUserAvail;
+		//}
 
 		UserInfo usrEmpId = new UserInfo();
 		usrEmpId.setUsrEmpId(user.getUsrEmpId());
