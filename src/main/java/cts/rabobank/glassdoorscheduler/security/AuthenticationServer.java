@@ -28,8 +28,6 @@ import cts.rabobank.glassdoorscheduler.service.UserInfoService;
 @EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
 public class AuthenticationServer extends WebSecurityConfigurerAdapter{
 	
-	
-	
 	private Logger log = LoggerFactory.getLogger(AuthenticationServer.class);
 
 	@Autowired
@@ -38,7 +36,7 @@ public class AuthenticationServer extends WebSecurityConfigurerAdapter{
 
 	public static void main(String[] args) {
 		BCryptPasswordEncoder bcpwd = new BCryptPasswordEncoder(11);
-		String pwd = bcpwd.encode("1234");
+		String pwd = bcpwd.encode("pass");
 		System.out.println("BCryptPassword == > " +pwd);
 	}
 	
@@ -101,7 +99,7 @@ public class AuthenticationServer extends WebSecurityConfigurerAdapter{
 			         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			     .and()
 		            .authorizeRequests()
-		            .antMatchers("/openapi/**","/oauth/token","/h2/**").permitAll()
+		            .antMatchers("/openapi/**","/oauth/token","/h2/**", "/roominfo/rooms").permitAll()
 		            .anyRequest()
 		            .authenticated();
 		            
@@ -113,7 +111,7 @@ public class AuthenticationServer extends WebSecurityConfigurerAdapter{
 		log.info("WebSecurity Nothing Configured =================> ");
 	    web.ignoring()
 		        .antMatchers(HttpMethod.OPTIONS, "/**")
-		        .antMatchers("/openapi/**","/h2/**");
+		        .antMatchers("/openapi/**","/h2/**", "/roominfo/rooms");
 	}
 
 }
