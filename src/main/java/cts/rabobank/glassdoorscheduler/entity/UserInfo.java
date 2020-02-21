@@ -36,7 +36,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserInfo implements UserDetails{
+public class UserInfo implements UserDetails {
 
 	/**
 	 * 
@@ -82,9 +82,7 @@ public class UserInfo implements UserDetails{
 		Set<SimpleGrantedAuthority> grantedAuthorities = new HashSet<SimpleGrantedAuthority>();
 		grantedAuthorities.add(new SimpleGrantedAuthority(this.role));
 		return grantedAuthorities;
-	}
-	
-	
+	}		
 	
 
 	@Override
