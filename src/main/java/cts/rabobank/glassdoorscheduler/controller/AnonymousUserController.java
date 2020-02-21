@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Date;
 
 import org.slf4j.Logger;
 
@@ -30,8 +31,8 @@ public class AnonymousUserController {
 
 	@Autowired
 	private PasswordEncoder pwdEncoder;
-
-	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+ 
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody UserInfo user, UriComponentsBuilder ucBuilder) {
 		logger.info("Creating User : {}", user);
 
@@ -42,6 +43,9 @@ public class AnonymousUserController {
 
 		
 		user.setPassword(pwdEncoder.encode(user.getPassword()));
+		user.setCreadtedDate(new Date());
+		user.setRole("ADMIN");
+		user.setStatus(true);
 		userDetailService.saveUser(user);
 		
 	
