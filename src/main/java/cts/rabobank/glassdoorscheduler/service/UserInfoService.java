@@ -3,6 +3,7 @@ package cts.rabobank.glassdoorscheduler.service;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.Lombok;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,17 @@ public class UserInfoService implements UserDetailsService {
 
 	Logger logger = LoggerFactory.getLogger(UserInfoService.class);
 
+	public UserInfo findUserById(Long id) {
+		return userInfoRepo.findByUsrEmpId(id);
+	}
+
 	public List<UserInfo> findAllUser() {
 		return userInfoRepo.findAll();
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String usrEmpId) throws UsernameNotFoundException {
-		UserInfo user = userInfoRepo.findByUsrEmpId(usrEmpId);
+		UserInfo user = userInfoRepo.findByUsrEmpId(Long.valueOf(usrEmpId));
 		if (user == null) {
 			throw new UsernameNotFoundException("User not found");
 		}
@@ -43,10 +48,11 @@ public class UserInfoService implements UserDetailsService {
 	public void saveUser(UserInfo user) {
 		userInfoRepo.save(user);
 	}
-	
-	public UserInfo findByUserName(String usrEmpId) {
-		return userInfoRepo.findByUsrEmpId(usrEmpId);
-	}
+
+	//TODO Check and remove this line
+//	public UserInfo findByUserName(String usrEmpId) {
+//		return userInfoRepo.findByUsrEmpId(usrEmpId);
+//	}
 
 	public boolean isUserExist(UserInfo user) {
 		boolean isUserAvail = false;

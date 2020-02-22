@@ -1,6 +1,7 @@
 package cts.rabobank.glassdoorscheduler.entity;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -18,10 +19,10 @@ public class BookingIdentity implements Serializable {
 	private Date bookingDate;
 	
 	@Column(name = "BOOKING_STARTTIME", nullable = false)
-	private Date bookingStartTime;
+	private Time bookingStartTime;
 	
 	@Column(name = "BOOKING_ENDTIME", nullable = false)
-	private Date bookingEndTime;
+	private Time bookingEndTime;
 	
 	public Room getRoomInfo() {
 		return roomInfo;
@@ -43,7 +44,7 @@ public class BookingIdentity implements Serializable {
 		return bookingStartTime;
 	}
 
-	public void setBookingStartTime(Date bookingStartTime) {
+	public void setBookingStartTime(Time bookingStartTime) {
 		this.bookingStartTime = bookingStartTime;
 	}
 
@@ -51,7 +52,7 @@ public class BookingIdentity implements Serializable {
 		return bookingEndTime;
 	}
 
-	public void setBookingEndTime(Date bookingEndTime) {
+	public void setBookingEndTime(Time bookingEndTime) {
 		this.bookingEndTime = bookingEndTime;
 	}
 

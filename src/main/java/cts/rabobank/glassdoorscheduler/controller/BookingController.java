@@ -1,15 +1,12 @@
 package cts.rabobank.glassdoorscheduler.controller;
 
+import cts.rabobank.glassdoorscheduler.entity.*;
+import cts.rabobank.glassdoorscheduler.service.RoomInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import cts.rabobank.glassdoorscheduler.entity.Booking;
-import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
 import cts.rabobank.glassdoorscheduler.service.BookingService;
 import cts.rabobank.glassdoorscheduler.service.UserInfoService;
 
@@ -22,13 +19,33 @@ public class BookingController {
 
 	@Autowired
 	private UserInfoService userInfoService;
-	
-	@RequestMapping(value = "/bookroom", method = RequestMethod.POST) 
-	public ResponseEntity<Booking> bookRoom(@ModelAttribute("bookingJSON") BookingInfo bookingInfoJSON) {	
 
-		Booking booking = new Booking();	
-		//Booking booking = bookingService.bookRoom(bookingInfoJSON);		
-		
+	@Autowired
+	RoomInfoService roomInfoService;
+
+	@Autowired
+	BookingInfo bookingInfo;
+
+	@RequestMapping(value = "/bookroom", method = RequestMethod.POST) 
+	public ResponseEntity<Booking> bookRoom(@RequestBody BookingInfo bookingInfo) {
+
+		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
+
+		BookingIdentity bookingIdentity = new BookingIdentity();
+		bookingIdentity.setBookingDate(bookingInfo.getBookingDate());
+		bookingIdentity.setBookingStartTime(bookingInfo.getBookingStartTime());
+		bookingIdentity.setBookingEndTime(bookingInfo.getBookingEndTime());
+		bookingIdentity.setRoomInfo(room);
+
+		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
+
+		Booking booking = new Booking();
+		booking.setPurpose("");
+		booking.setBookingIdentity(bookingIdentity);
+		booking.setUserInfo(userInfo);
+
+		bookingService.bookRoom(booking);
+		//TODO do we need to return the booking details here
 		return new ResponseEntity<Booking>(booking, HttpStatus.OK);
 	}
 }

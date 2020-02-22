@@ -13,6 +13,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.jpa.repository.Temporal;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "BOOKING_INFO")
@@ -25,9 +30,10 @@ public class Booking {
 	
 	@EmbeddedId
 	private BookingIdentity bookingIdentity;
-	
+
+	@CreationTimestamp
 	@Column(name = "CREATEDON", nullable = false)
-	private String createdOn;
+	private Timestamp createdOn;
 	
 	@ManyToOne(cascade=CascadeType.ALL)  
 	private UserInfo userInfo;
