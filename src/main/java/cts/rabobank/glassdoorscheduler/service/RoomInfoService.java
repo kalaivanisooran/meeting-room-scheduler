@@ -1,13 +1,14 @@
 package cts.rabobank.glassdoorscheduler.service;
 
 import java.util.List;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import cts.rabobank.glassdoorscheduler.entity.Room;
 import cts.rabobank.glassdoorscheduler.repo.RoomInfoRepo;
 
 @Service
+@NoArgsConstructor
 public class RoomInfoService {
 
 	@Autowired
@@ -21,5 +22,4 @@ public class RoomInfoService {
 		return roomInfoRepo.findById(id)
 				.orElseThrow(()->new RuntimeException("Invalid Room ID"));
 	}
-
 }
