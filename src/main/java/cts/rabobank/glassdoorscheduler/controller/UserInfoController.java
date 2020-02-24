@@ -39,7 +39,7 @@ public class UserInfoController {
 	@RequestMapping(value = "/fetchuser/{userid}", method = RequestMethod.GET)
 	public ResponseEntity<?> getUser(@PathVariable("userid") String userid) {
 		logger.info("Fetching User with userid {}", userid);
-		UserInfo user = userInfoService.findByUserName(userid);
+		UserInfo user = userInfoService.findUserById(Long.valueOf(userid));
 		if (user == null) {
 			logger.error("User with userid {} not found.", userid);
 			return new ResponseEntity<CustomMessage>(

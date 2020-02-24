@@ -51,7 +51,7 @@ public class UserInfo implements UserDetails {
 
 	@Column(name = "USR_EMP_ID",nullable = false,unique = true)
 	@Size(max = 7)
-	private String usrEmpId;
+	private Long usrEmpId;
 
 	@Column(name = "FULL_NAME", nullable = false)
 	@Size(max = 50)
@@ -87,7 +87,7 @@ public class UserInfo implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return this.usrEmpId;
+		return String.valueOf(this.usrEmpId);
 	}
 
 	@Override

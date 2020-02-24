@@ -8,7 +8,7 @@ import cts.rabobank.glassdoorscheduler.entity.UserInfo;
 @Repository
 public interface UserInfoRepo extends JpaRepository<UserInfo, Long> {
 	
-	public UserInfo findByUsrEmpId(String usrEmpId);
+	public UserInfo findByUsrEmpId(Long usrEmpId);
 	
 	
     
