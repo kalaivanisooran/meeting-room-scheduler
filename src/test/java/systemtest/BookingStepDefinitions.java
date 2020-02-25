@@ -1,6 +1,13 @@
 package systemtest;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
+import cucumber.api.DataTable;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
@@ -18,29 +25,30 @@ public class BookingStepDefinitions extends AbstractSpringConfigurationTest {
 
     private final Logger log = LoggerFactory.getLogger(BookingStepDefinitions.class);
 
+    private static final String BOOKING_END_POINT ="/bookingroom/bookroom";
+
     private ResponseEntity<String> response = null;
 
     @Given("^User logged the adminpanel$")
-    public void user_logged_the_adminpanel() {
+    public void user_logged_the_admin_panel(){
+        //TODO check the Oauth token here
         Assertions.assertTrue(true);
     }
 
-    @When("User provide valid input")
-    public void user_provide_valid_input(){
-        Assertions.assertTrue(true);
-
-        //TODO make the request call more generic
-        String url = buildUrl(HOST, PORT, "/bookingroom/bookroom");
-        Map<String,Object> requestBody = new HashMap<>();
-        requestBody.put("roomId","1");
-        requestBody.put("usrEmpId","1234");
-        requestBody.put("userName","team");
-        requestBody.put("bookingDate",new Date()); //TODO need to check date format
-        requestBody.put("bookingStartTime","11:00:00");
-        requestBody.put("bookingEndTime","12:00:00");
-
-        HttpEntity<?> requestEntity = new HttpEntity<>(requestBody, getDefaultHttpHeaders());
+    @When("^User provide valid input (.*)$")
+    public void user_provide_valid_input(String request){
+        String url = buildUrl(HOST, PORT, BOOKING_END_POINT);
+        HttpEntity<?> requestEntity = new HttpEntity<>(request, getDefaultHttpHeaders());
         response = invokeRESTCall(url, HttpMethod.POST, requestEntity);
     }
 
+    @Then("^Then Booking the meeting room for that schedule should be successful$")
+    public void  chk_Meeting_room_booking_process(){
+        Assertions.assertEquals(200,response.getStatusCode());
+    }
+
+    @And("^User will get the (.*)$")
+    public void chk_response(String expectedStatusCode){
+        Assertions.assertEquals(expectedStatusCode,response.getStatusCode());
+    }
 }

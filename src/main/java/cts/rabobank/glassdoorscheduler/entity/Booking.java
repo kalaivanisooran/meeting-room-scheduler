@@ -1,12 +1,7 @@
 package cts.rabobank.glassdoorscheduler.entity;
 
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,10 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.jpa.repository.Temporal;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 
 @Entity
 @Table(name = "BOOKING_INFO")
@@ -26,8 +20,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Booking {
-	
+@IdClass(BookingId.class)
+public class Booking extends BookingId implements Serializable {
+
 	@EmbeddedId
 	private BookingIdentity bookingIdentity;
 
@@ -35,7 +30,7 @@ public class Booking {
 	@Column(name = "CREATEDON", nullable = false)
 	private Timestamp createdOn;
 	
-	@ManyToOne(cascade=CascadeType.ALL)  
+	@ManyToOne(cascade=CascadeType.MERGE)
 	private UserInfo userInfo;
 	
 	@Column(name = "PURPOSE", nullable = false)

@@ -26,7 +26,7 @@ public class BookingController {
 	@Autowired
 	BookingInfo bookingInfo;
 
-	@RequestMapping(value = "/bookroom", method = RequestMethod.POST) 
+	@PostMapping(value = "/bookroom")
 	public ResponseEntity<Booking> bookRoom(@RequestBody BookingInfo bookingInfo) {
 
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
@@ -48,4 +48,12 @@ public class BookingController {
 		//TODO do we need to return the booking details here
 		return new ResponseEntity<Booking>(booking, HttpStatus.OK);
 	}
+
+	@GetMapping(value="cancelmeetingroom/{meetingRoomId}")
+	public ResponseEntity<?> cancelMeetingRoom(@PathVariable Long meetingRoomId) {
+		bookingService.cancelMeetingRoom(meetingRoomId);
+		//TODO Need to change
+		return new ResponseEntity<String>("meeting room cancelled successfully", HttpStatus.OK);
+	}
+
 }
