@@ -1,18 +1,20 @@
 package cts.rabobank.glassdoorscheduler.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+@Getter
+@Setter
 @Embeddable
 public class BookingIdentity implements Serializable {
-	
-	@ManyToOne(cascade=CascadeType.ALL)  
+
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Room roomInfo;
 	
 	@Column(name = "BOOKING_DATE", nullable = false)
@@ -23,40 +25,6 @@ public class BookingIdentity implements Serializable {
 	
 	@Column(name = "BOOKING_ENDTIME", nullable = false)
 	private Time bookingEndTime;
-	
-	public Room getRoomInfo() {
-		return roomInfo;
-	}
-
-	public void setRoomInfo(Room roomInfo) {
-		this.roomInfo = roomInfo;
-	}
-
-	public Date getBookingDate() {
-		return bookingDate;
-	}
-
-	public void setBookingDate(Date bookingDate) {
-		this.bookingDate = bookingDate;
-	}
-
-	public Date getBookingStartTime() {
-		return bookingStartTime;
-	}
-
-	public void setBookingStartTime(Time bookingStartTime) {
-		this.bookingStartTime = bookingStartTime;
-	}
-
-	public Date getBookingEndTime() {
-		return bookingEndTime;
-	}
-
-	public void setBookingEndTime(Time bookingEndTime) {
-		this.bookingEndTime = bookingEndTime;
-	}
-
-	
 	
 	@Override
 	public int hashCode() {

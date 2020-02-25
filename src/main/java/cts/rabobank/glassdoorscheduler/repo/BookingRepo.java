@@ -6,6 +6,5 @@ import cts.rabobank.glassdoorscheduler.entity.Booking;
 
 @Repository
 public interface BookingRepo extends JpaRepository<Booking, Long> {
-
-	
+    public void deleteByBookingId(Long bookingId);
 }
