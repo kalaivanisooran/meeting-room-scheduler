@@ -24,7 +24,6 @@ public class BookingInfo {
 	@NotNull(message ="Employee Id should not be empty")
 	private int usrEmpId;
 
-	@Pattern(regexp = "^\\d{4}(\\-)(((0)[0-9])|((1)[0-2]))(\\-)([0-2][0-9]|(3)[0-1])$", message = "Invalid user name Format")
 	private String userName;
 
 	@Future(message = "Date must not be the past")

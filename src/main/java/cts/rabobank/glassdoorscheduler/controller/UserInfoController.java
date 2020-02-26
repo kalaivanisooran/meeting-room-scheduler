@@ -29,7 +29,7 @@ public class UserInfoController {
 	public ResponseEntity<?> listAllUsers() {
 		List<UserInfo> users = userInfoService.findAllUser();
 		if (users.isEmpty()) {
-			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK, "No Users found"), HttpStatus.OK);
+			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "No Users found"), HttpStatus.OK);
 		}
 		return new ResponseEntity<List<UserInfo>>(users, HttpStatus.OK);
 	}
@@ -43,7 +43,7 @@ public class UserInfoController {
 		if (user == null) {
 			logger.error("User with userid {} not found.", userid);
 			return new ResponseEntity<CustomMessage>(
-					new CustomMessage(HttpStatus.NOT_ACCEPTABLE, "User " + userid + " not found"),
+					new CustomMessage(HttpStatus.NOT_ACCEPTABLE.value(), "User " + userid + " not found"),
 					HttpStatus.NOT_ACCEPTABLE);// 417
 		}
 		return new ResponseEntity<UserInfo>(user, HttpStatus.OK);

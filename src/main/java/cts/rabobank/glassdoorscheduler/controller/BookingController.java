@@ -1,24 +1,18 @@
 package cts.rabobank.glassdoorscheduler.controller;
 
 import cts.rabobank.glassdoorscheduler.entity.*;
-import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
 import cts.rabobank.glassdoorscheduler.service.RoomInfoService;
 import cts.rabobank.glassdoorscheduler.util.BookingValidator;
 import cts.rabobank.glassdoorscheduler.util.CustomMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
 import cts.rabobank.glassdoorscheduler.service.BookingService;
 import cts.rabobank.glassdoorscheduler.service.UserInfoService;
 
 import javax.validation.Valid;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/bookingroom")
@@ -40,7 +34,7 @@ public class BookingController extends BookingValidator {
 	BookingInfo bookingInfo;
 
 	@PostMapping(value = "/bookroom",consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Booking> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
+	public ResponseEntity<CustomMessage> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
 
 		bookingValidator.chkBookingRoomInputField(bookingInfo,errors);
 
@@ -60,15 +54,14 @@ public class BookingController extends BookingValidator {
 		booking.setUserInfo(userInfo);
 
 		bookingService.bookRoom(booking);
-		//TODO do we need to return the booking details here
-		return new ResponseEntity<>(booking, HttpStatus.OK);
+		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Booked the meeting room successfully."), HttpStatus.OK);
 	}
 
 	@GetMapping(value="cancelmeetingroom/{meetingRoomId}")
-	public ResponseEntity<?> cancelMeetingRoom(@PathVariable Long meetingRoomId) {
+	public ResponseEntity<CustomMessage> cancelMeetingRoom(@PathVariable Long meetingRoomId) {
 		bookingService.cancelMeetingRoom(meetingRoomId);
-		//TODO Need to change
-		return new ResponseEntity<String>("meeting room cancelled successfully", HttpStatus.OK);
+		//TODO Need to handle exception scenario
+		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room cancelled successfully."), HttpStatus.OK);
 	}
 
 }

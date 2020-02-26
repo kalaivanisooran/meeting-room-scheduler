@@ -19,7 +19,7 @@ public class GlassDoorExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = { UnexpectedTypeException.class})
 	public ResponseEntity<CustomMessage> handleUnexpectedTypeException(Exception exception){
 		log.debug("Exception: {}",exception.getMessage());
-		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST,"Invalid Input requested");
+		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST.value(),"Invalid Input requested");
 		//TODO response status code is not clear
 		return new ResponseEntity<>(apiCustomMessage, HttpStatus.BAD_REQUEST);
 	}
@@ -27,7 +27,7 @@ public class GlassDoorExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = { InvalidInputRequestException.class})
 	public ResponseEntity<CustomMessage> handleInvalidInputRequestException(Exception exception){
 		log.debug("Exception: {}",exception.getMessage());
-		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST,exception.getMessage());
+		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST.value(),exception.getMessage());
 		//TODO response status code is not clear
 		return new ResponseEntity<>(apiCustomMessage, HttpStatus.BAD_REQUEST);
 	}
@@ -35,7 +35,7 @@ public class GlassDoorExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = { Exception.class })
 	public ResponseEntity<CustomMessage> handleAllExceptions(Exception exception){
 		log.debug("Exception: {}",exception.getMessage());
-		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST,"Error :" + exception.getMessage());
+		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST.value(),"Error :" + exception.getMessage());
 		return new ResponseEntity<>(apiCustomMessage, HttpStatus.BAD_REQUEST);
 	}
 }

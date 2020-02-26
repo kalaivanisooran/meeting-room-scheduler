@@ -3,6 +3,7 @@ package cts.rabobank.glassdoorscheduler.service;
 import java.util.List;
 import java.util.Optional;
 
+import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
 import lombok.Lombok;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class UserInfoService implements UserDetailsService {
 	Logger logger = LoggerFactory.getLogger(UserInfoService.class);
 
 	public UserInfo findUserById(Long id) {
-		return userInfoRepo.findByUsrEmpId(id);
+		return Optional.ofNullable(userInfoRepo.findByUsrEmpId(id)).orElseThrow(()->new InvalidInputRequestException("Invalid. Requested user information is not available"));
 	}
 
 	public List<UserInfo> findAllUser() {

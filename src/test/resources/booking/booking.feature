@@ -9,4 +9,5 @@
 
       Examples:
         | request | response |
+        |{"roomId":1,"usrEmpId":"4567", "bookingDate":"2020-03-01","bookingStartTime":"11:00:00","bookingEndTime":"11:30:00"} |   200 |
         |{"roomId":1,"usrEmpId":"4567", "userName":"Team","bookingDate":"2020-03-01","bookingStartTime":"11:00:00","bookingEndTime":"11:30:00"} |   200 |

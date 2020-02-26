@@ -37,7 +37,7 @@ public class AnonymousUserController {
 
 		if (userDetailService.isUserExist(user)) {
 			logger.error("Unable to create. A User with name {} already exist", user.getFullName());
-			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.CONFLICT, "Username already exist."), HttpStatus.CONFLICT);//409
+			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.CONFLICT.value(), "Username already exist."), HttpStatus.CONFLICT);//409
 		}
 
 		
@@ -48,7 +48,7 @@ public class AnonymousUserController {
 		logger.info("User with id " + user.getUsername() + " Created");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/user-service/fetchuser/{id}").buildAndExpand(user.getUsrEmpId()).toUri());
-		return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK, "Successfully Registered"), HttpStatus.CREATED);
+		return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "Successfully Registered"), HttpStatus.CREATED);
 	}
 
 }
