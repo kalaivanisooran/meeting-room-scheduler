@@ -29,26 +29,33 @@ public class BookingStepDefinitions extends AbstractSpringConfigurationTest {
 
     private ResponseEntity<String> response = null;
 
-    @Given("^User logged the adminpanel$")
+    @Given("^User logged the admin panel$")
     public void user_logged_the_admin_panel(){
         //TODO check the Oauth token here
         Assertions.assertTrue(true);
     }
 
-    @When("^User provide valid input (.*)$")
-    public void user_provide_valid_input(String request){
+    @When("^User provide (.*) input (.*)$")
+    public void user_provide_valid_input(String inputType, String request){
         String url = buildUrl(HOST, PORT, BOOKING_END_POINT);
         HttpEntity<?> requestEntity = new HttpEntity<>(request, getDefaultHttpHeaders());
         response = invokeRESTCall(url, HttpMethod.POST, requestEntity);
+        Assertions.assertTrue(true);
     }
 
-    @Then("^Then Booking the meeting room for that schedule should be successful$")
+    @Then("^Trying to book the meeting room$")
     public void  chk_Meeting_room_booking_process(){
-        Assertions.assertEquals(200,response.getStatusCode());
+        //TODO need to add scenario
+        Assertions.assertTrue(true);
     }
 
-    @And("^User will get the (.*)$")
-    public void chk_response(String expectedStatusCode){
-        Assertions.assertEquals(expectedStatusCode,response.getStatusCode());
+    @And("^User will get respective (.*)$")
+    public void user_will_get_respective_status_code(Integer expectedStatusCode){
+        Assertions.assertEquals(expectedStatusCode,response.getStatusCode().value());
+    }
+
+    @And("^response message should be (.*)$")
+    public void response_message_should_be(String expectedMessage){
+        Assertions.assertEquals(expectedMessage,response.getBody());
     }
 }
