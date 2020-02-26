@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CustomMessage {
 
-	private int statusCode;
+	private int status;
 	
 	private String message;
 	

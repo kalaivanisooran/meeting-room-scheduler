@@ -11,7 +11,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import cts.rabobank.glassdoorscheduler.service.BookingService;
 import cts.rabobank.glassdoorscheduler.service.UserInfoService;
-
 import javax.validation.Valid;
 
 @RestController
@@ -54,7 +53,7 @@ public class BookingController extends BookingValidator {
 		booking.setUserInfo(userInfo);
 
 		bookingService.bookRoom(booking);
-		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Booked the meeting room successfully."), HttpStatus.OK);
+		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room booked successfully."), HttpStatus.OK);
 	}
 
 	@GetMapping(value="cancelmeetingroom/{meetingRoomId}")
