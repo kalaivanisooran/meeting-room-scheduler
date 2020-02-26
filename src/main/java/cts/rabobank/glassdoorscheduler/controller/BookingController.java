@@ -1,21 +1,34 @@
 package cts.rabobank.glassdoorscheduler.controller;
 
 import cts.rabobank.glassdoorscheduler.entity.*;
+import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
 import cts.rabobank.glassdoorscheduler.service.RoomInfoService;
+import cts.rabobank.glassdoorscheduler.util.BookingValidator;
+import cts.rabobank.glassdoorscheduler.util.CustomMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import cts.rabobank.glassdoorscheduler.service.BookingService;
 import cts.rabobank.glassdoorscheduler.service.UserInfoService;
 
+import javax.validation.Valid;
+import java.util.InvalidPropertiesFormatException;
+import java.util.Objects;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/bookingroom")
-public class BookingController {
+public class BookingController extends BookingValidator {
 
 	@Autowired
 	private BookingService bookingService;
+
+	@Autowired
+	private BookingValidator bookingValidator;
 
 	@Autowired
 	private UserInfoService userInfoService;
@@ -26,8 +39,10 @@ public class BookingController {
 	@Autowired
 	BookingInfo bookingInfo;
 
-	@PostMapping(value = "/bookroom")
-	public ResponseEntity<Booking> bookRoom(@RequestBody BookingInfo bookingInfo) {
+	@PostMapping(value = "/bookroom",consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Booking> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
+
+		bookingValidator.chkBookingRoomInputField(bookingInfo,errors);
 
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
 
@@ -46,7 +61,7 @@ public class BookingController {
 
 		bookingService.bookRoom(booking);
 		//TODO do we need to return the booking details here
-		return new ResponseEntity<Booking>(booking, HttpStatus.OK);
+		return new ResponseEntity<>(booking, HttpStatus.OK);
 	}
 
 	@GetMapping(value="cancelmeetingroom/{meetingRoomId}")
