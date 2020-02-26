@@ -41,7 +41,7 @@ public class AuthorizationServer  extends AuthorizationServerConfigurerAdapter {
 				.withClient("glassdoor")
 				.secret(pwdEncoder.encode("glassdoor"))
 				.authorizedGrantTypes("password", "refresh_token")
-				.accessTokenValiditySeconds(20000)
+				//.accessTokenValiditySeconds(20000)
 				//.refreshTokenValiditySeconds(60*60*24*7)
 				.scopes("read","write")
 				.authorities("ADMIN","GUEST")

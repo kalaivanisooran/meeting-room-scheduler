@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @CrossOrigin
 public class GlassdoorSchedulerApplication {
 
+	
 	public static void main(String[] args) {
 		SpringApplication.run(GlassdoorSchedulerApplication.class, args);
 	}
