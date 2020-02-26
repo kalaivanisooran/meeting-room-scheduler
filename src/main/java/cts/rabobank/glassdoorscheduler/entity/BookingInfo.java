@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Component
@@ -17,11 +19,13 @@ import java.util.Date;
 public class BookingInfo {
 	
 	private int roomId;
+	
 	//TODO Added this field newly to this class. Need to chk with others on the userId or UserName
 	private int usrEmpId;
 	private String userName;
-	private Date bookingDate;
-	private Time bookingStartTime;
-	private Time bookingEndTime;
+	private LocalDate bookingDate;
+	private LocalTime bookingStartTime;
+	private LocalTime bookingEndTime;
 
 }
+ 
