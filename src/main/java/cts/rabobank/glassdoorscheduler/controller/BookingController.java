@@ -53,14 +53,14 @@ public class BookingController extends BookingValidator {
 		booking.setUserInfo(userInfo);
 
 		bookingService.bookRoom(booking);
-		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room booked successfully."), HttpStatus.OK);
+		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room booked successfully"), HttpStatus.OK);
 	}
 
 	@GetMapping(value="cancelmeetingroom/{meetingRoomId}")
 	public ResponseEntity<CustomMessage> cancelMeetingRoom(@PathVariable Long meetingRoomId) {
 		bookingService.cancelMeetingRoom(meetingRoomId);
 		//TODO Need to handle exception scenario
-		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room cancelled successfully."), HttpStatus.OK);
+		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room cancelled successfully"), HttpStatus.OK);
 	}
 
 }
