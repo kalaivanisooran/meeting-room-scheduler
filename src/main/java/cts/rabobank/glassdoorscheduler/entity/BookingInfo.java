@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.*;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,15 +18,23 @@ import java.util.Date;
 @Getter
 @Setter
 public class BookingInfo {
-	
-	private int roomId;
-	
-	//TODO Added this field newly to this class. Need to chk with others on the userId or UserName
-	private int usrEmpId;
-	private String userName;
-	private LocalDate bookingDate;
-	private LocalTime bookingStartTime;
-	private LocalTime bookingEndTime;
 
+	@NotNull
+	private int roomId;
+  
+	//TODO Added this field newly to this class. Need to chk with others on the userId or UserName
+	@NotNull(message ="Employee Id should not be empty")
+	private int usrEmpId;
+
+	private String userName; 
+
+	@Future(message = "Date must not be the past")
+	private LocalDate bookingDate;
+
+	@NotNull(message = "Start Time should not be empty")
+	private LocalTime bookingStartTime;
+
+	@NotNull(message = "End Time should not be empty")
+	private LocalTime bookingEndTime;
 }
  

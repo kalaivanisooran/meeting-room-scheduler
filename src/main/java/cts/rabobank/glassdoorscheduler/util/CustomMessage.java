@@ -1,7 +1,5 @@
 package cts.rabobank.glassdoorscheduler.util;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CustomMessage {
 
-	private HttpStatus sCode;
+	private int status;
 	
 	private String message;
-	
 	
 }

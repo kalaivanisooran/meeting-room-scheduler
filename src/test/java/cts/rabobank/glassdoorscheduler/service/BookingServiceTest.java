@@ -9,12 +9,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
@@ -44,14 +41,7 @@ public class BookingServiceTest {
         MockitoAnnotations.initMocks(this);
         bookingInfo = new BookingInfo(1,1234,"Team",LocalDate.now(),LocalTime.now(),LocalTime.now());
     }
-    
-    private Room getRoomDetails(){
-        return new Room(1L,"GD-ROOM-1");
-       }
 
-    private UserInfo getUserInfo(){
-        return new UserInfo(2L,1234L,"teamname","passwordencrypted",true,new Date(),"admin","");
-    }
 
     @Test
     @DisplayName("Add new meeting room schedule")
@@ -61,20 +51,13 @@ public class BookingServiceTest {
         when(bookingRepo.save(any())).thenReturn(new Booking());
 
         Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
+        UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
 
         Booking booking = new Booking();
-        //BookingIdentity bookingIdentity = new BookingIdentity();
         booking.setBookingDate(bookingInfo.getBookingDate());
         booking.setBookingStartTime(bookingInfo.getBookingStartTime());
         booking.setBookingEndTime(bookingInfo.getBookingEndTime());
-
-        UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
-
-        //Booking booking = new Booking();
         booking.setPurpose("");
-        //booking.setBookingIdentity(bookingIdentity); 
-        //booking.setUserInfo(userInfo);
-        //booking.setRoomInfo(room); 
 
         //TODO chk the mock value here
         Booking savedBooking = bookingService.bookRoom(booking);
@@ -86,7 +69,16 @@ public class BookingServiceTest {
     @ExceptionHandler
     public void testCancelMeetingRoomSchedule() {
         bookingService.cancelMeetingRoom(1L);
+        //TODO check scenario
+        Assertions.assertTrue(true);
     }
 
-   
+
+    private Room getRoomDetails(){
+        return new Room(1L,"GD-ROOM-1");
+    }
+
+    private UserInfo getUserInfo(){
+        return new UserInfo(2L,1234L,"teamname","passwordencrypted",true,new Date(),"admin","");
+    }
 }

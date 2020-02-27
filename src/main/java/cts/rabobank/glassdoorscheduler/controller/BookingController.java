@@ -2,24 +2,27 @@ package cts.rabobank.glassdoorscheduler.controller;
 
 import cts.rabobank.glassdoorscheduler.entity.*;
 import cts.rabobank.glassdoorscheduler.service.RoomInfoService;
-
+import cts.rabobank.glassdoorscheduler.util.BookingValidator;
+import cts.rabobank.glassdoorscheduler.util.CustomMessage;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
 import cts.rabobank.glassdoorscheduler.service.BookingService;
 import cts.rabobank.glassdoorscheduler.service.UserInfoService;
-import cts.rabobank.glassdoorscheduler.util.CustomMessage;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/meetingroom")
-public class BookingController {
+public class BookingController extends BookingValidator {
 
 	@Autowired
 	private BookingService bookingService;
+
+	@Autowired
+	private BookingValidator bookingValidator;
 
 	@Autowired
 	private UserInfoService userInfoService;
@@ -30,46 +33,40 @@ public class BookingController {
 	@Autowired
 	BookingInfo bookingInfo;
 
-	@PostMapping(value = "/bookroom")
-	public ResponseEntity<Booking> bookRoom(@RequestBody BookingInfo bookingInfo) {
+	@PostMapping(value = "/bookroom",consumes = "application/json", produces = "application/json")
+	public ResponseEntity<CustomMessage> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
+
+		bookingValidator.chkBookingRoomInputField(bookingInfo,errors);
 
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
+		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
 
-		//BookingIdentity bookingIdentity = new BookingIdentity();
+		//TODO handle the scenario if room is already booked.
 		Booking booking = new Booking();
 		booking.setBookingDate(bookingInfo.getBookingDate());
 		booking.setBookingStartTime(bookingInfo.getBookingStartTime());
 		booking.setBookingEndTime(bookingInfo.getBookingEndTime());
 		booking.setRoomInfo(room);
-
-		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
-
-		//Booking booking = new Booking(); 
 		booking.setPurpose("");
-		//booking.setBookingIdentity(bookingIdentity);
 		booking.setUserInfo(userInfo);
-
 		bookingService.bookRoom(booking);
-		//TODO do we need to return the booking details here
-		return new ResponseEntity<Booking>(booking, HttpStatus.OK);
+		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room booked successfully"), HttpStatus.OK);
 	}
 
 	@GetMapping(value="cancelmeetingroom/{meetingRoomId}")
-	public ResponseEntity<?> cancelMeetingRoom(@PathVariable Long meetingRoomId) {
+	public ResponseEntity<CustomMessage> cancelMeetingRoom(@PathVariable Long meetingRoomId) {
 		bookingService.cancelMeetingRoom(meetingRoomId);
-		//TODO Need to change
-		return new ResponseEntity<String>("meeting room cancelled successfully", HttpStatus.OK);
+		//TODO Need to handle exception scenario
+		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room cancelled successfully"), HttpStatus.OK);
 	}
 	
-	
-	@RequestMapping(value = "/searchroom", method = RequestMethod.GET)
+	@GetMapping(value = "/searchroom")
 	public ResponseEntity<?> searchRooms(@RequestBody Searching searchParam) {
 
 		List<Booking> rooms = bookingService.searchMeetingRooms(searchParam);
 
 		if (rooms.isEmpty()) {
-			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK, "No GlassRoom found"),
-					HttpStatus.OK);
+			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "No GlassRoom found"),HttpStatus.OK);
 		}
 		return new ResponseEntity<List<Booking>>(rooms, HttpStatus.OK);
 	}
