@@ -4,8 +4,8 @@
  @positiveCase
   Scenario Outline: Book the meeting room with valid input
        Given User logged the admin panel
-       When User provide <valid> input <request>
-       Then Trying to book the meeting room
+       When User provide content-type application/json
+       And User provide <valid> input <request>
        And User will get respective <response_status_code>
        And response message should be <response_message>
 
@@ -17,8 +17,8 @@
 
      Scenario Outline: Book the meeting room with invalid input
            Given User logged the admin panel
-           When User provide <invalid> input <request>
-           Then Trying to book the meeting room
+           When User provide content-type application/json
+           And User provide <invalid> input <request>
            And User will get respective <response_status_code>
            And response message should be <response_message>
 

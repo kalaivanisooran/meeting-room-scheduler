@@ -1,24 +1,22 @@
 package systemtest;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
-import cucumber.api.DataTable;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import java.util.Date;
+import org.springframework.http.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import static java.util.stream.Collectors.joining;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BookingStepDefinitions extends AbstractSpringConfigurationTest {
@@ -29,24 +27,37 @@ public class BookingStepDefinitions extends AbstractSpringConfigurationTest {
 
     private ResponseEntity<String> response = null;
 
+    private String access_token;
+
+    private HttpHeaders headers = new HttpHeaders();
+
     @Given("^User logged the admin panel$")
-    public void user_logged_the_admin_panel(){
-        //TODO check the Oauth token here
-        Assertions.assertTrue(true);
+    public void user_logged_the_admin_panel() throws JSONException {
+        //TODO set the profile to run the end-to-end test
+        ResponseEntity<String> authResponse = this.requestForAccessToken();
+        Assertions.assertNotNull(authResponse,"Authorization response should not be empty");
+        Assertions.assertEquals(200,authResponse.getStatusCode().value());
+
+        access_token = new JSONObject(authResponse.getBody()).getString("access_token");
     }
 
-    @When("^User provide (.*) input (.*)$")
+    @When("^User provide content-type (.*)$")
+    public void user_provide_content_type(String content_type){
+        Assertions.assertEquals("application/json",content_type,"Content type should be application/json");
+
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(access_token);
+    }
+
+    @And("^User provide (.*) input (.*)$")
     public void user_provide_valid_input(String inputType, String request){
-        String url = buildUrl(HOST, PORT, BOOKING_END_POINT);
-        HttpEntity<?> requestEntity = new HttpEntity<>(request, getDefaultHttpHeaders());
-        response = invokeRESTCall(url, HttpMethod.POST, requestEntity);
-        Assertions.assertTrue(true);
-    }
+        Assertions.assertNotNull(request);
+        Assertions.assertNotEquals("",request.trim(),"Request should not be empty");
 
-    @Then("^Trying to book the meeting room$")
-    public void  chk_Meeting_room_booking_process(){
-        //TODO need to add scenario
-        Assertions.assertTrue(true);
+        String url = buildUrl(HOST, PORT, BOOKING_END_POINT);
+        HttpEntity<?> requestEntity = new HttpEntity<>(request, headers);
+        response = invokeRESTCall(url, HttpMethod.POST, requestEntity);
+        Assertions.assertNotNull(response);
     }
 
     @And("^User will get respective (.*)$")
@@ -57,5 +68,30 @@ public class BookingStepDefinitions extends AbstractSpringConfigurationTest {
     @And("^response message should be (.*)$")
     public void response_message_should_be(String expectedMessage){
         Assertions.assertEquals(expectedMessage,response.getBody());
+    }
+
+    private String encodeValue(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
+    }
+
+    private ResponseEntity<String> requestForAccessToken(){
+
+        String url = buildUrl(HOST, PORT, "/oauth/token");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBasicAuth("glassdoor","glassdoor");
+
+        Map<String,String> requestParam = new HashMap<>();
+        requestParam.put("username","1234");
+        requestParam.put("password","1234");
+        requestParam.put("grant_type","password");
+
+        String encodedURL = requestParam.keySet().stream()
+                .map(key -> key + "=" + encodeValue(requestParam.get(key)))
+                .collect(joining("&", url.concat("?"), ""));
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+        return invokeRESTCall(encodedURL, HttpMethod.POST, requestEntity);
     }
 }
