@@ -7,9 +7,7 @@ import cts.rabobank.glassdoorscheduler.entity.Booking;
 import cts.rabobank.glassdoorscheduler.entity.Searching;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
 import cts.rabobank.glassdoorscheduler.repo.SearchSpecifications;
-
 import java.util.List;
-
 import javax.transaction.Transactional;
 
 @Service

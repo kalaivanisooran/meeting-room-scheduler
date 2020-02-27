@@ -36,6 +36,5 @@ public class BookingInfo {
 
 	@NotNull(message = "End Time should not be empty")
 	private LocalTime bookingEndTime;
-	private LocalTime bookingEndTime;
 }
  

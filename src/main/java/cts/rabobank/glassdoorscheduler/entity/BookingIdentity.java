@@ -2,11 +2,9 @@ package cts.rabobank.glassdoorscheduler.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
-
 import javax.persistence.*;
 
 @Getter

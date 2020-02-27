@@ -1,10 +1,8 @@
 package cts.rabobank.glassdoorscheduler.util;
 
-import cts.rabobank.glassdoorscheduler.entity.Booking;
 import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
 import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
 import org.springframework.validation.Errors;
-
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,7 +23,7 @@ public class BookingValidator {
     }
 
     private void chkEndTimeGreaterThanStartTime(final BookingInfo bookingInfo){
-        if(bookingInfo.getBookingStartTime().getTime() >= bookingInfo.getBookingEndTime().getTime()){
+        if(bookingInfo.getBookingStartTime().compareTo(bookingInfo.getBookingEndTime()) >= 0){
             throw new InvalidInputRequestException("End Time should be greater than Start Time");
         }
     }

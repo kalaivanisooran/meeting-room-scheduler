@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import cts.rabobank.glassdoorscheduler.service.BookingService;
 import cts.rabobank.glassdoorscheduler.service.UserInfoService;
 import javax.validation.Valid;
-import cts.rabobank.glassdoorscheduler.util.CustomMessage;
 
 @RestController
 @RequestMapping("/meetingroom")
@@ -40,21 +39,16 @@ public class BookingController extends BookingValidator {
 		bookingValidator.chkBookingRoomInputField(bookingInfo,errors);
 
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
+		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
 
-		//BookingIdentity bookingIdentity = new BookingIdentity();
+		//TODO handle the scenario if room is already booked.
 		Booking booking = new Booking();
 		booking.setBookingDate(bookingInfo.getBookingDate());
 		booking.setBookingStartTime(bookingInfo.getBookingStartTime());
 		booking.setBookingEndTime(bookingInfo.getBookingEndTime());
 		booking.setRoomInfo(room);
-
-		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
-
-		//Booking booking = new Booking(); 
 		booking.setPurpose("");
-		//booking.setBookingIdentity(bookingIdentity);
 		booking.setUserInfo(userInfo);
-
 		bookingService.bookRoom(booking);
 		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room booked successfully"), HttpStatus.OK);
 	}
@@ -66,15 +60,13 @@ public class BookingController extends BookingValidator {
 		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),"Meeting room cancelled successfully"), HttpStatus.OK);
 	}
 	
-	
-	@RequestMapping(value = "/searchroom", method = RequestMethod.GET)
+	@GetMapping(value = "/searchroom")
 	public ResponseEntity<?> searchRooms(@RequestBody Searching searchParam) {
 
 		List<Booking> rooms = bookingService.searchMeetingRooms(searchParam);
 
 		if (rooms.isEmpty()) {
-			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK, "No GlassRoom found"),
-					HttpStatus.OK);
+			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "No GlassRoom found"),HttpStatus.OK);
 		}
 		return new ResponseEntity<List<Booking>>(rooms, HttpStatus.OK);
 	}

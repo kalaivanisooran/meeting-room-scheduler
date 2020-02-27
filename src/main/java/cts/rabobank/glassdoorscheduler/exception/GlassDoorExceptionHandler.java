@@ -1,6 +1,5 @@
 package cts.rabobank.glassdoorscheduler.exception;
 
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,13 +13,12 @@ import javax.validation.UnexpectedTypeException;
 @ControllerAdvice
 public class GlassDoorExceptionHandler extends ResponseEntityExceptionHandler {
 
-	private Logger log = LoggerFactory.getLogger(GlassDoorExceptionHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(GlassDoorExceptionHandler.class);
 
 	@ExceptionHandler(value = { UnexpectedTypeException.class})
 	public ResponseEntity<CustomMessage> handleUnexpectedTypeException(Exception exception){
-		log.debug("Exception: {}",exception.getMessage());
+		log.debug("UnexpectedTypeException: {}",exception.getMessage());
 		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST.value(),"Invalid Input requested");
-		//TODO response status code is not clear
 		return new ResponseEntity<>(apiCustomMessage, HttpStatus.BAD_REQUEST);
 	}
 
@@ -28,7 +26,6 @@ public class GlassDoorExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<CustomMessage> handleInvalidInputRequestException(Exception exception){
 		log.debug("Exception: {}",exception.getMessage());
 		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST.value(),exception.getMessage());
-		//TODO response status code is not clear
 		return new ResponseEntity<>(apiCustomMessage, HttpStatus.BAD_REQUEST);
 	}
 

@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
+
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -23,7 +25,7 @@ public class BookingStepDefinitions extends AbstractSpringConfigurationTest {
 
     private final Logger log = LoggerFactory.getLogger(BookingStepDefinitions.class);
 
-    private static final String BOOKING_END_POINT ="/bookingroom/bookroom";
+    private static final String BOOKING_END_POINT ="/meetingroom/bookroom";
 
     private ResponseEntity<String> response = null;
 
@@ -71,7 +73,11 @@ public class BookingStepDefinitions extends AbstractSpringConfigurationTest {
     }
 
     private String encodeValue(String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
+        try {
+            return URLEncoder.encode(value, String.valueOf(StandardCharsets.UTF_8));
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
     }
 
     private ResponseEntity<String> requestForAccessToken(){

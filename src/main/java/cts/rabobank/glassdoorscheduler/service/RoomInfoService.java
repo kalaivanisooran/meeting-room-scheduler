@@ -1,7 +1,6 @@
 package cts.rabobank.glassdoorscheduler.service;
 
 import java.util.List;
-
 import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,6 @@ package cts.rabobank.glassdoorscheduler.service;
 
 import cts.rabobank.glassdoorscheduler.entity.Room;
 import org.junit.jupiter.api.*;
-
 import static org.mockito.Mockito.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -10,8 +9,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import cts.rabobank.glassdoorscheduler.repo.RoomInfoRepo;
-import org.springframework.util.Assert;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,8 +55,6 @@ public class RoomInfoServiceTest {
     private List<Room> getRoomList(){
         return Arrays.asList(new Room(1L,"GD-ROOM-1"),
                 new Room(2L,"GD-ROOM-2")
-               // new Room(3L,"GD-ROOM-3")
         );
     }
-
 }
