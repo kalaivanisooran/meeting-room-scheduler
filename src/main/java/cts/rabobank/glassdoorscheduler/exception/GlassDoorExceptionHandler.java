@@ -13,7 +13,7 @@ import cts.rabobank.glassdoorscheduler.util.CustomMessage;
 public class GlassDoorExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(value = { Exception.class })
-	public ResponseEntity<?> handleAllExceptions(Exception exception){exception.printStackTrace();
+	public ResponseEntity<?> handleAllExceptions(Exception exception){
 		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST,"Internal Error :" + exception.getMessage());
 		return new ResponseEntity<CustomMessage>(apiCustomMessage, HttpStatus.BAD_REQUEST);
 	}
