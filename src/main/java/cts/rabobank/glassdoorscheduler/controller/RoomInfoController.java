@@ -26,7 +26,7 @@ public class RoomInfoController {
 		
 		List<Room> rooms = roomInfoService.findAllRoom();
 		if (rooms.isEmpty()) {
-			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "No Users found"), HttpStatus.OK);
+			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK, "No Rooms found"), HttpStatus.OK);
 		}
 		return new ResponseEntity<List<Room>>(rooms, HttpStatus.OK);
 	}

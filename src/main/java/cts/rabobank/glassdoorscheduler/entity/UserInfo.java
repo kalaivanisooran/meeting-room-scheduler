@@ -50,7 +50,6 @@ public class UserInfo implements UserDetails {
 	private Long id;
 
 	@Column(name = "USR_EMP_ID",nullable = false,unique = true)
-	@Size(max = 7)
 	private Long usrEmpId;
 
 	@Column(name = "FULL_NAME", nullable = false)

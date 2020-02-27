@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.*;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Component
@@ -19,20 +21,21 @@ public class BookingInfo {
 
 	@NotNull
 	private int roomId;
-
+  
 	//TODO Added this field newly to this class. Need to chk with others on the userId or UserName
 	@NotNull(message ="Employee Id should not be empty")
 	private int usrEmpId;
 
-	private String userName;
+	private String userName; 
 
 	@Future(message = "Date must not be the past")
-	private Date bookingDate;
+	private LocalDate bookingDate;
 
 	@NotNull(message = "Start Time should not be empty")
-	private Time bookingStartTime;
+	private LocalTime bookingStartTime;
 
 	@NotNull(message = "End Time should not be empty")
-	private Time bookingEndTime;
-
+	private LocalTime bookingEndTime;
+	private LocalTime bookingEndTime;
 }
+ 
