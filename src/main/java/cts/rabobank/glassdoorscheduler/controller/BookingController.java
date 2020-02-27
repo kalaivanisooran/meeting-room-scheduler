@@ -41,7 +41,6 @@ public class BookingController extends BookingValidator {
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
 		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
 
-		//TODO handle the scenario if room is already booked.
 		Booking booking = new Booking();
 		booking.setBookingDate(bookingInfo.getBookingDate());
 		booking.setBookingStartTime(bookingInfo.getBookingStartTime());
