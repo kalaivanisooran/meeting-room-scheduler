@@ -16,12 +16,13 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                 withCredentials([[$class          : 'UsernamePasswordMultiBinding',
-                                                  credentialsId   : 'KALAI_PCF_LOGIN',
-                                                  usernameVariable: 'USERNAME',
-                                                  passwordVariable: 'PASSWORD']]) {
+                 withCredentials([[$class : 'UsernamePasswordMultiBinding',
+                                  credentialsId   : 'KALAI_PCF_LOGIN',
+                                  usernameVariable: 'USERNAME',
+                                  passwordVariable: 'PASSWORD']]) {
 
                     sh '/usr/local/bin/cf login -a http://api.run.pivotal.io -u $USERNAME -p $PASSWORD'
+                    sh '/usr/local/bin/cf target -s testing'
                     sh '/usr/local/bin/cf push'
                  }
             }
