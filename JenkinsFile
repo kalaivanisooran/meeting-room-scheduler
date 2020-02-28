@@ -15,6 +15,10 @@ pipeline {
             }
         }
         stage('Deploy') {
+            input {
+                message "Do you want to proceed to deploy the app to cloud?"
+                ok "Yes"
+            }
             steps {
                  withCredentials([[$class : 'UsernamePasswordMultiBinding',
                                   credentialsId   : 'KALAI_PCF_LOGIN',
