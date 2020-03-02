@@ -38,12 +38,12 @@ public class BookingService {
 	public List<SearchResponse> searchMeetingRooms(Searching searching) {
 
 		List<SearchResponse> searchRespList = new ArrayList<SearchResponse>();
-		SearchResponse searchResp = new SearchResponse();
+		
 
 		List<Booking> bookingList = bookingrepo.findAll(SearchSpecifications.searchMeetingRooms(searching));
 
 		for (Booking books : bookingList) {
-
+			SearchResponse searchResp = new SearchResponse();
 			searchResp.setBookingDate(books.getBookingDate());
 			searchResp.setBookingStartTime(books.getBookingStartTime());
 			searchResp.setBookingEndTime(books.getBookingEndTime());
