@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.*;
+
+import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,10 +19,10 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BookingInfo {
+public class BookingInfo implements Serializable{
 
 	@NotNull
-	private int roomId;
+	private Integer roomId;
   
 	//TODO Added this field newly to this class. Need to chk with others on the userId or UserName
 	@NotNull(message ="Employee Id should not be empty")

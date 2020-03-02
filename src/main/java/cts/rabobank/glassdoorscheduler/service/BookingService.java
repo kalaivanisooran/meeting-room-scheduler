@@ -4,6 +4,7 @@ import cts.rabobank.glassdoorscheduler.repo.BookingIDRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cts.rabobank.glassdoorscheduler.entity.Booking;
+import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
 import cts.rabobank.glassdoorscheduler.entity.Room;
 import cts.rabobank.glassdoorscheduler.entity.Searching;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
@@ -36,9 +37,9 @@ public class BookingService {
 	}
 	
 	
-	public boolean canBookingAllowed(Booking b) {
+	public boolean canBookingAllowed(BookingInfo b) {
 		boolean canBook = true;
-		Optional<Booking> booked = bookingrepo.doBookingSlotAvailable(b.getBookingDate(), b.getRoomInfo().getId(), b.getBookingStartTime(), b.getBookingEndTime());
+		Optional<Booking> booked = bookingrepo.doBookingSlotAvailable(b.getBookingDate(), b.getRoomId().longValue(), b.getBookingStartTime(), b.getBookingEndTime());
 		if(booked.isPresent()) {
 			canBook = false;
 		}
