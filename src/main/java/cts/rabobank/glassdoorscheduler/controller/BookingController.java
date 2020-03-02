@@ -34,13 +34,7 @@ public class BookingController extends BookingValidator {
 	BookingInfo bookingInfo;
 
 	@PostMapping(value = "/canbook")
-	public ResponseEntity<CustomMessage> canBooRoom(@RequestBody Booking bookingInfo) {
-		
-
-		Room roomInfo = new Room();
-		roomInfo.setId(1L);
-		bookingInfo.setRoomInfo(roomInfo);
-		
+	public ResponseEntity<CustomMessage> canBooRoom(@RequestBody BookingInfo bookingInfo) {
 		boolean canBook = bookingService.canBookingAllowed(bookingInfo);
 		if (canBook) {
 			return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(),
@@ -55,6 +49,8 @@ public class BookingController extends BookingValidator {
 	@PostMapping(value = "/bookroom", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<CustomMessage> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
 
+		
+		System.out.println("bookingInfo in Service : " +bookingInfo);
 		bookingValidator.chkBookingRoomInputField(bookingInfo, errors);
 
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
@@ -72,7 +68,7 @@ public class BookingController extends BookingValidator {
 				HttpStatus.OK);
 	}
 
-	@GetMapping(value = "cancelmeetingroom/{meetingRoomId}")
+	@GetMapping(value = "/cancelmeetingroom/{meetingRoomId}")
 	public ResponseEntity<CustomMessage> cancelMeetingRoom(@PathVariable Long meetingRoomId) {
 		bookingService.cancelMeetingRoom(meetingRoomId);
 		// TODO Need to handle exception scenario
