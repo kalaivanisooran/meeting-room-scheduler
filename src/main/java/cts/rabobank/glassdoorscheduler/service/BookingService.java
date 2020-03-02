@@ -39,7 +39,6 @@ public class BookingService {
 
 		List<SearchResponse> searchRespList = new ArrayList<SearchResponse>();
 		
-
 		List<Booking> bookingList = bookingrepo.findAll(SearchSpecifications.searchMeetingRooms(searching));
 
 		for (Booking books : bookingList) {
