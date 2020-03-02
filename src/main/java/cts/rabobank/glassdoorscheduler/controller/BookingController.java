@@ -49,8 +49,6 @@ public class BookingController extends BookingValidator {
 	@PostMapping(value = "/bookroom", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<CustomMessage> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
 
-		
-		System.out.println("bookingInfo in Service : " +bookingInfo);
 		bookingValidator.chkBookingRoomInputField(bookingInfo, errors);
 
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());

@@ -21,7 +21,7 @@ import java.util.Date;
 @Setter
 public class BookingInfo implements Serializable{
 
-	@NotNull
+	@NotNull(message ="Room Id should not be empty")
 	private Integer roomId;
   
 	//TODO Added this field newly to this class. Need to chk with others on the userId or UserName
@@ -30,7 +30,7 @@ public class BookingInfo implements Serializable{
 
 	private String userName; 
 
-	@Future(message = "Date must not be the past")
+	@FutureOrPresent(message = "Date must not be the past")
 	private LocalDate bookingDate;
 
 	@NotNull(message = "Start Time should not be empty")
