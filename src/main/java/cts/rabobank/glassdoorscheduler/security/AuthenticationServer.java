@@ -99,7 +99,8 @@ public class AuthenticationServer extends WebSecurityConfigurerAdapter{
 			         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			     .and()
 		            .authorizeRequests()
-		            .antMatchers("/openapi/**","/oauth/token","/h2/**").permitAll()
+		            .antMatchers("/openapi/**","/oauth/token","/h2/**","/meetingroom/**")
+		            .permitAll()
 		            .anyRequest()
 		            .authenticated();
 		            
@@ -111,7 +112,13 @@ public class AuthenticationServer extends WebSecurityConfigurerAdapter{
 		log.info("WebSecurity Nothing Configured =================> ");
 	    web.ignoring()
 		        .antMatchers(HttpMethod.OPTIONS, "/**")
-		        .antMatchers("/openapi/**","/h2/**");
+		        .antMatchers("/openapi/**","/h2/**","/meetingroom/**")
+		        .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**");
 	}
 
 }
