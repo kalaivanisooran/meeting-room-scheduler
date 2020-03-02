@@ -5,12 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cts.rabobank.glassdoorscheduler.entity.Booking;
 import cts.rabobank.glassdoorscheduler.entity.SearchResponse;
+import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
+import cts.rabobank.glassdoorscheduler.entity.Room;
 import cts.rabobank.glassdoorscheduler.entity.Searching;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
 import cts.rabobank.glassdoorscheduler.repo.SearchSpecifications;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 @Service
@@ -53,6 +57,16 @@ public class BookingService {
 		}
 
 		return searchRespList;
+	}
+	
+	
+	public boolean canBookingAllowed(BookingInfo b) {
+		boolean canBook = true;
+		Optional<Booking> booked = bookingrepo.doBookingSlotAvailable(b.getBookingDate(), b.getRoomId().longValue(), b.getBookingStartTime(), b.getBookingEndTime());
+		if(booked.isPresent()) {
+			canBook = false;
+		}
+		return canBook;
 	}
 
 }
