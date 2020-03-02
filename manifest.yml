@@ -6,3 +6,7 @@ applications:
   buildpack: https://github.com/cloudfoundry/java-buildpack.git
   env:
     JBP_CONFIG_OPEN_JDK_JRE  : '{ jre: { version: 11.+ }, memory_calculator: { stack_threads: 25 } }'
+  routes:
+    - route: route1.internalteam.com
+    - route: route2.internalteam.com
+    - route: route3.internalteam.com
