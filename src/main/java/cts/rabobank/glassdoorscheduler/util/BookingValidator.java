@@ -21,14 +21,7 @@ public class BookingValidator {
     }
 
     private void chkMeetingRoomAvailable(final BookingInfo bookingInfo){
-
-        Searching checkRoom = new Searching();
-        checkRoom.setRoomId(bookingInfo.getRoomId());
-        checkRoom.setBookingDate(bookingInfo.getBookingDate());
-        checkRoom.setBookingStartTime(bookingInfo.getBookingStartTime());
-        checkRoom.setBookingEndTime(bookingInfo.getBookingEndTime());
-
-        if (!bookingService.searchMeetingRooms(checkRoom).isEmpty()) {
+        if (!bookingService.canBookingAllowed(bookingInfo)) {
             throw new InvalidInputRequestException("Requested Meeting room is not available");
         }
     }
