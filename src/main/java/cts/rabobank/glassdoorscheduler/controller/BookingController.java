@@ -77,15 +77,12 @@ public class BookingController extends BookingValidator {
 	@PostMapping(value = "/searchroom")
 	public ResponseEntity<?> searchRooms(@RequestBody Searching searchParam) {
 
-		System.out.println("searchParam 1:   " + searchParam);
-		List<Booking> rooms = bookingService.searchMeetingRooms(searchParam);
-
-		System.out.println("searchParam 2:   " + rooms);
+		List<SearchResponse> rooms = bookingService.searchMeetingRooms(searchParam); 
 
 		if (rooms.isEmpty()) {
 			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "No GlassRoom found"),
 					HttpStatus.OK);
 		}
-		return new ResponseEntity<List<Booking>>(rooms, HttpStatus.OK);
+		return new ResponseEntity<List<SearchResponse>>(rooms, HttpStatus.OK);
 	}
 }
