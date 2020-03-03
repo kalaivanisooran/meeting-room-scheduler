@@ -51,6 +51,7 @@ public class BookingService {
 			searchResp.setUserId(books.getUserInfo().getId());
 			searchResp.setUsername(books.getUserInfo().getUsername());
 			searchResp.setUsrEmpId(books.getUserInfo().getUsrEmpId());
+			searchResp.setBookingId(books.getId());
 
 			searchRespList.add(searchResp);
 		}
