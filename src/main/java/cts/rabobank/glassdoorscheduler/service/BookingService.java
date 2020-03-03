@@ -1,12 +1,12 @@
 package cts.rabobank.glassdoorscheduler.service;
 
+import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
 import cts.rabobank.glassdoorscheduler.repo.BookingIDRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cts.rabobank.glassdoorscheduler.entity.Booking;
 import cts.rabobank.glassdoorscheduler.entity.SearchResponse;
 import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
-import cts.rabobank.glassdoorscheduler.entity.Room;
 import cts.rabobank.glassdoorscheduler.entity.Searching;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
 import cts.rabobank.glassdoorscheduler.repo.SearchSpecifications;
@@ -32,7 +32,11 @@ public class BookingService {
 	}
 
 	public void cancelMeetingRoom(Long bookingId) {
-		bookingrepo.deleteById(bookingId);
+		try {
+			bookingrepo.deleteById(bookingId);
+		} catch (Exception e) {
+			throw new InvalidInputRequestException("Invalid. Requested meeting room information is not available");
+		}
 	}
 
 	public List<SearchResponse> searchMeetingRooms(Searching searching) {

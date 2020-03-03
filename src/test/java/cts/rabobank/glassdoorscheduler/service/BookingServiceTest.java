@@ -1,6 +1,7 @@
 package cts.rabobank.glassdoorscheduler.service;
 
 import cts.rabobank.glassdoorscheduler.entity.*;
+import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
@@ -8,14 +9,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class BookingServiceTest {
@@ -66,13 +65,18 @@ public class BookingServiceTest {
 
     @Test
     @DisplayName("Cancel meeting room schedule")
-    @ExceptionHandler
     public void testCancelMeetingRoomSchedule() {
         bookingService.cancelMeetingRoom(1L);
         //TODO check scenario
         Assertions.assertTrue(true);
     }
 
+    @Test
+    @DisplayName("Catch exception while Cancel meeting room schedule")
+    public void testCancelMeetingRoomWhichIsNotListed() {
+        doThrow(new InvalidInputRequestException("Invalid. Requested meeting room information is not available")).when(bookingRepo).deleteById(any());
+        Assertions.assertThrows(InvalidInputRequestException.class,()->bookingService.cancelMeetingRoom(1L));
+    }
 
     private Room getRoomDetails(){
         return new Room(1L,"GD-ROOM-1");
