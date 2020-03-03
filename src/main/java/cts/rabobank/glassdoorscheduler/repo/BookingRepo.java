@@ -14,12 +14,7 @@ import cts.rabobank.glassdoorscheduler.entity.Booking;
 
 @Repository
 public interface BookingRepo extends CrudRepository<Booking, Long>, JpaSpecificationExecutor<Booking> {
-	
-    public void deleteById(Long bookingId);
-    
-    
-    
-    
+
     @Query("SELECT B FROM Booking B WHERE B.roomInfo.id=:roomId AND B.bookingDate=:bookDate   "
     		+ "AND ((:fTime BETWEEN B.bookingStartTime AND B.bookingEndTime) "
     		+ "OR (:eTime BETWEEN B.bookingStartTime AND  B.bookingEndTime))  "
@@ -28,6 +23,4 @@ public interface BookingRepo extends CrudRepository<Booking, Long>, JpaSpecifica
     							   @Param("roomId") Long roomId,
     							   @Param("fTime") LocalTime fTime,
     							   @Param("eTime") LocalTime eTime); 
-    
-    
 }
