@@ -12,14 +12,14 @@ import cts.rabobank.glassdoorscheduler.service.RoomInfoService;
 import cts.rabobank.glassdoorscheduler.util.CustomMessage;
 
 @RestController
-@RequestMapping("/roominfo")
+@RequestMapping("/room")
 public class RoomInfoController {
 
 	@Autowired
 	private RoomInfoService roomInfoService;
 
 	
-	@GetMapping(value = "/rooms")
+	@GetMapping(value = "/fetchrooms")
 	public ResponseEntity<?> listAllRooms() {
 		
 		List<Room> rooms = roomInfoService.findAllRoom();

@@ -1,16 +1,26 @@
 package cts.rabobank.glassdoorscheduler.entity;
 
-import lombok.Getter;
-import lombok.Setter;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 @Embeddable
 public class BookingIdentity implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Room roomInfo;

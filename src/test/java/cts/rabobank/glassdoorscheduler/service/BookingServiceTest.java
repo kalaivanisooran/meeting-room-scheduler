@@ -38,7 +38,7 @@ public class BookingServiceTest {
     @BeforeEach
     public void init(){
         MockitoAnnotations.initMocks(this);
-        bookingInfo = new BookingInfo(1,1234,"Team",LocalDate.now(),LocalTime.now(),LocalTime.now());
+        bookingInfo = new BookingInfo(1,1234,"Team",LocalDate.now(),LocalTime.now(),LocalTime.now(),"reason");
     }
 
 
