@@ -38,9 +38,11 @@ public class SearchResponse implements Serializable {
 	
 	private Long userId;
 	
-	private String username;
+	private String userName;
 	
 	private Long bookingId;
+	
+	private String purpose;
 	
 	
 }

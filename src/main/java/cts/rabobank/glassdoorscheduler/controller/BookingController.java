@@ -46,7 +46,7 @@ public class BookingController extends BookingValidator {
 				HttpStatus.CONFLICT);
 	}
 
-	@PostMapping(value = "/bookroom", consumes = "application/json", produces = "application/json")
+	@PostMapping(value = "/book", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<CustomMessage> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
 
 		bookingValidator.chkBookingRoomInputField(bookingInfo, errors);
@@ -59,22 +59,21 @@ public class BookingController extends BookingValidator {
 		booking.setBookingStartTime(bookingInfo.getBookingStartTime());
 		booking.setBookingEndTime(bookingInfo.getBookingEndTime());
 		booking.setRoomInfo(room);
-		booking.setPurpose("");
+		booking.setPurpose(bookingInfo.getPurpose());
 		booking.setUserInfo(userInfo);
 		bookingService.bookRoom(booking);
 		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(), "Meeting room booked successfully"),
 				HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/cancelmeetingroom/{meetingRoomId}")
+	@GetMapping(value = "/cancel/{meetingRoomId}")
 	public ResponseEntity<CustomMessage> cancelMeetingRoom(@PathVariable Long meetingRoomId) {
 		bookingService.cancelMeetingRoom(meetingRoomId);
-		// TODO Need to handle exception scenario
 		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(), "Meeting room cancelled successfully"),
 				HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/searchroom")
+	@PostMapping(value = "/search")
 	public ResponseEntity<?> searchRooms(@RequestBody Searching searchParam) {
 
 		List<SearchResponse> rooms = bookingService.searchMeetingRooms(searchParam); 

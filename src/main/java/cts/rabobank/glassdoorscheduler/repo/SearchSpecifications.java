@@ -26,7 +26,7 @@ public class SearchSpecifications {
 			if (searching.getBookingEndTime() != null) {
 				predicates.add(cb.and(cb.equal(booking.get("bookingEndTime"), searching.getBookingEndTime())));
 			}
-			if (searching.getRoomId() != null) {
+			if (searching.getRoomId() != null && searching.getRoomId().intValue() > 0) {
 				predicates.add(cb.and(cb.equal(booking.get("roomInfo"), searching.getRoomId())));
 			}
 			if (searching.getUsrEmpId() != null) {

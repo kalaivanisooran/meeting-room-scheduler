@@ -44,7 +44,7 @@ public class SwaggerConfig {
 				.title("Glass Door Swagger App")
 				.description("\"Glass Door Swagger Server App\"")
 				.version("1.0.0").license("Cognizant Glass Door Version 2.0")
-				.licenseUrl("https://www.ctsrebo.com/licenses/LICENSE-2.0\"")
+				.licenseUrl("https://www.ctsrabo.com/licenses/LICENSE-2.0\"")
 				.build();
 
 	}

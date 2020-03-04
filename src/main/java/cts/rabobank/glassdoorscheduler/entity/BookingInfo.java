@@ -1,18 +1,18 @@
 package cts.rabobank.glassdoorscheduler.entity;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.stereotype.Component;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.*;
-
-import java.io.Serializable;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 
 @Component
 @NoArgsConstructor
@@ -20,6 +20,11 @@ import java.util.Date;
 @Getter
 @Setter
 public class BookingInfo implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@NotNull(message ="Room Id should not be empty")
 	private Integer roomId;
@@ -38,5 +43,7 @@ public class BookingInfo implements Serializable{
 
 	@NotNull(message = "End Time should not be empty")
 	private LocalTime bookingEndTime;
+	
+	private String purpose;
 }
  

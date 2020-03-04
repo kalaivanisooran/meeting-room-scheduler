@@ -21,6 +21,11 @@ import java.time.LocalTime;
 @ToString
 public class Booking implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
