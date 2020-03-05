@@ -1,5 +1,7 @@
 package cts.rabobank.glassdoorscheduler.service;
 
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -71,8 +73,13 @@ public class BookingService {
 
 	public boolean canBookingAllowed(BookingInfo b) {
 		boolean canBook = true;
+		
+		
+		LocalTime bStrartTime  = b.getBookingStartTime().plus(1, ChronoUnit.MINUTES); 
+		LocalTime bEndTime  = b.getBookingEndTime().minus(1, ChronoUnit.MINUTES); 
+		
 		Optional<Booking> booked = bookingrepo.doBookingSlotAvailable(b.getBookingDate(), b.getRoomId().longValue(),
-				b.getBookingStartTime(), b.getBookingEndTime());
+				bStrartTime, bEndTime);
 		if (booked.isPresent()) {
 			canBook = false;
 		}
