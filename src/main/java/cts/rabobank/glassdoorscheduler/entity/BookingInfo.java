@@ -36,7 +36,10 @@ public class BookingInfo implements Serializable{
 	private String userName; 
 
 	@FutureOrPresent(message = "Date must not be the past")
-	private LocalDate bookingDate;
+	private LocalDate bookingStartDate;
+
+	@FutureOrPresent(message = "Date must not be the past")
+	private LocalDate bookingEndDate;
 
 	@NotNull(message = "Start Time should not be empty")
 	private LocalTime bookingStartTime;

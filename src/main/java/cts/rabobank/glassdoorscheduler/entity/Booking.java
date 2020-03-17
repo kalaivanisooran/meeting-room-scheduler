@@ -33,8 +33,11 @@ public class Booking implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Room roomInfo;
 
-	@Column(name = "BOOKING_DATE", nullable = false)
-	private LocalDate bookingDate;
+	@Column(name = "BOOKING_START_DATE", nullable = false)
+	private LocalDate bookingStartDate;
+
+	@Column(name = "BOOKING_END_DATE", nullable = false)
+	private LocalDate bookingEndDate;
 
 	@Column(name = "BOOKING_STARTTIME", nullable = false)
 	private LocalTime bookingStartTime;

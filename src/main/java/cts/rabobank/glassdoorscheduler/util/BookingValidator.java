@@ -17,14 +17,15 @@ public class BookingValidator {
     public void chkBookingRoomInputField(final BookingInfo bookingInfo, final Errors errors){
         this.chkInputFieldHasError(errors);
         this.chkEndTimeGreaterThanStartTime(bookingInfo);
-        this.chkMeetingRoomAvailable(bookingInfo);
+        //TODO need to check the avaiablity
+        //this.chkMeetingRoomAvailable(bookingInfo);
     }
 
-    private void chkMeetingRoomAvailable(final BookingInfo bookingInfo){
-        if (!bookingService.canBookingAllowed(bookingInfo)) {
-            throw new InvalidInputRequestException("Requested Meeting room is not available");
-        }
-    }
+//    private void chkMeetingRoomAvailable(final BookingInfo bookingInfo){
+//        if (!bookingService.canBookingAllowed(bookingInfo)) {
+//            throw new InvalidInputRequestException("Requested Meeting room is not available");
+//        }
+//    }
 
     private void chkInputFieldHasError(final Errors errors){
         if(errors.hasErrors()) {
