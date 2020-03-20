@@ -48,5 +48,8 @@ public class BookingInfo implements Serializable{
 	private LocalTime bookingEndTime;
 	
 	private String purpose;
+
+	@NotNull(message = "Mode should not be null")
+	private String mode;
 }
  
