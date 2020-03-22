@@ -33,13 +33,8 @@ public class BookingInfo implements Serializable{
 	@NotNull(message ="Employee Id should not be empty")
 	private int usrEmpId;
 
-	private String userName; 
-
 	@FutureOrPresent(message = "Date must not be the past")
 	private LocalDate bookingStartDate;
-
-	@FutureOrPresent(message = "Date must not be the past")
-	private LocalDate bookingEndDate;
 
 	@NotNull(message = "Start Time should not be empty")
 	private LocalTime bookingStartTime;

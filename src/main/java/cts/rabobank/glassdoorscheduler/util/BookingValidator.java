@@ -7,6 +7,7 @@ import cts.rabobank.glassdoorscheduler.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 
+import javax.validation.constraints.Null;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +33,7 @@ public class BookingValidator {
 //    }
 
     private void chkInputFieldHasError(final Errors errors){
-        if(errors.hasErrors()) {
+        if(Optional.ofNullable(errors).isPresent() && errors.hasErrors()) {
             throw new InvalidInputRequestException(Optional.ofNullable(
                     Objects.requireNonNull(errors.getFieldError())
                             .getDefaultMessage())

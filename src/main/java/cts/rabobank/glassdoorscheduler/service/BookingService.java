@@ -60,7 +60,7 @@ public class BookingService {
 	}
 
 
-	private Boolean recordMeetingRoomBasedOnMode(Room room, UserInfo userInfo,BookingInfo bookingInfo,int noOfRecurrsive) {
+	protected Boolean recordMeetingRoomBasedOnMode(Room room, UserInfo userInfo,BookingInfo bookingInfo,int noOfRecurrsive) {
 
 		LocalDate currentBookingDate = bookingInfo.getBookingStartDate();
 
@@ -70,7 +70,6 @@ public class BookingService {
 			try {
 				Booking booking = new Booking();
 				booking.setBookingStartDate(currentBookingDate);
-				booking.setBookingEndDate(currentBookingDate);
 				booking.setBookingStartTime(bookingInfo.getBookingStartTime());
 				booking.setBookingEndTime(bookingInfo.getBookingEndTime());
 				booking.setRoomInfo(room);

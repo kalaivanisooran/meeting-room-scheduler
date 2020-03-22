@@ -36,9 +36,6 @@ public class Booking implements Serializable {
 	@Column(name = "BOOKING_START_DATE", nullable = false)
 	private LocalDate bookingStartDate;
 
-	@Column(name = "BOOKING_END_DATE", nullable = false)
-	private LocalDate bookingEndDate;
-
 	@Column(name = "BOOKING_STARTTIME", nullable = false)
 	private LocalTime bookingStartTime;
 
