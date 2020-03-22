@@ -1,20 +1,24 @@
 package cts.rabobank.glassdoorscheduler.controller;
 
-import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
-import cts.rabobank.glassdoorscheduler.service.BookingService;
-import cts.rabobank.glassdoorscheduler.service.UserInfoService;
-import cts.rabobank.glassdoorscheduler.util.BookingValidator;
-import cts.rabobank.glassdoorscheduler.util.CustomMessage;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
+import cts.rabobank.glassdoorscheduler.entity.BookingPurpose;
+import cts.rabobank.glassdoorscheduler.service.BookingService;
+import cts.rabobank.glassdoorscheduler.util.BookingValidator;
+import cts.rabobank.glassdoorscheduler.util.CustomMessage;
 
 @RestController
 @RequestMapping("/newmeetingroom")
@@ -25,10 +29,7 @@ public class NewBookingController {
 
     @Autowired
     private BookingService bookingService;
-
-    @Autowired
-    private UserInfoService userInfoService;
-
+    
     @PostMapping(value = "/book", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<CustomMessage> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
 
@@ -36,5 +37,15 @@ public class NewBookingController {
 		bookingService.bookRoom(bookingInfo);
 		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(), "Meeting room booked successfully"),
 				HttpStatus.OK);
+	}
+    
+    @GetMapping(value = "/fetchBookingPurposes")
+	public ResponseEntity<?> listAllBookingPurposes() {
+		
+		List<BookingPurpose> bookingPurposeList = bookingService.fetchAllBookingPurposes();
+		if (bookingPurposeList.isEmpty()) {
+			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "No Purpose found"), HttpStatus.OK);
+		}
+		return new ResponseEntity<List<BookingPurpose>>(bookingPurposeList, HttpStatus.OK);
 	}
 }

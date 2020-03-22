@@ -3,11 +3,21 @@ package cts.rabobank.glassdoorscheduler.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import javax.transaction.Transactional;
-import cts.rabobank.glassdoorscheduler.entity.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import cts.rabobank.glassdoorscheduler.entity.Booking;
+import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
+import cts.rabobank.glassdoorscheduler.entity.BookingPurpose;
+import cts.rabobank.glassdoorscheduler.entity.Room;
+import cts.rabobank.glassdoorscheduler.entity.SearchResponse;
+import cts.rabobank.glassdoorscheduler.entity.Searching;
+import cts.rabobank.glassdoorscheduler.entity.UserInfo;
 import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
+import cts.rabobank.glassdoorscheduler.repo.BookingPurposeRepo;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
 
 @Service
@@ -22,6 +32,9 @@ public class BookingService {
 
 	@Autowired
 	private BookingRepo bookingrepo;
+	
+	@Autowired
+	private BookingPurposeRepo bookingPurposeRepo;
 
 
 	public Booking bookRoom(BookingInfo bookingInfo) {
@@ -109,5 +122,9 @@ public class BookingService {
 //		}
 //		return canBook;
 //	}
+	
+	public List<BookingPurpose> fetchAllBookingPurposes() {
+		return bookingPurposeRepo.findAll();
+	}
 
 }
