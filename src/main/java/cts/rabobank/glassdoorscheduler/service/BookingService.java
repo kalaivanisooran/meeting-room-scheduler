@@ -44,37 +44,24 @@ public class BookingService {
 
 	private final Logger logger = LoggerFactory.getLogger(BookingService.class);
 
-
 	public Boolean bookRoom(BookingInfo bookingInfo, Errors errors) {
 
 		bookingValidator.chkBookingRoomInputField(bookingInfo,errors);
-
-		int noOfRecurrsive;
-
-		switch (bookingInfo.getMode()) {
-			case "week":
-				noOfRecurrsive = 7;
-				break;
-			case "month":
-				noOfRecurrsive = 30;
-				break;
-			default:
-				noOfRecurrsive = 1;
-				break;
-		}
-
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
 		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
-		return Optional.ofNullable(this.recordMeetingRoomBasedOnMode(room,userInfo,bookingInfo,noOfRecurrsive))
+		return Optional.ofNullable(this.recordMeetingRoomBasedOnMode(room,userInfo,bookingInfo,this.setNoOfRecursiveBasedOnMode(bookingInfo.getMode())))
 				.orElseThrow(()->new MeetingRoomBookingException("Something went wrong while inserting the data into database"));
 	}
 
 
 	protected Boolean recordMeetingRoomBasedOnMode(Room room, UserInfo userInfo,BookingInfo bookingInfo,int noOfRecurrsive) {
 
-		LocalDate currentBookingDate = bookingInfo.getBookingStartDate();
+		LocalDate currentBookingDate = null;
+		if (bookingInfo!=null) {
+			currentBookingDate = bookingInfo.getBookingStartDate();
+		}
 
-        for (int i=0;i<noOfRecurrsive;i++){
+		for (int i=0;i<noOfRecurrsive;i++){
 			currentBookingDate = (i == 0)?currentBookingDate: currentBookingDate.plusDays(1);
 			//TODO check the meeting room availabilty
 			try {
@@ -94,6 +81,23 @@ public class BookingService {
 		}
 
 		return true;
+	}
+
+	protected int setNoOfRecursiveBasedOnMode(String mode){
+		int noOfRecurrsive;
+
+		switch (mode) {
+			case "week":
+				noOfRecurrsive = 7;
+				break;
+			case "month":
+				noOfRecurrsive = 30;
+				break;
+			default:
+				noOfRecurrsive = 1;
+				break;
+		}
+		return noOfRecurrsive;
 	}
 
 

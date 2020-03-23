@@ -33,12 +33,15 @@ public class BookingValidator {
 //    }
 
     private void chkInputFieldHasError(final Errors errors){
-        if(Optional.ofNullable(errors).isPresent() && errors.hasErrors()) {
-            throw new InvalidInputRequestException(Optional.ofNullable(
-                    Objects.requireNonNull(errors.getFieldError())
-                            .getDefaultMessage())
-                    .orElse("Invalid Input requested"));
+        if(errors!=null){
+            if(errors.hasErrors()) {
+                throw new InvalidInputRequestException(Optional.ofNullable(
+                        Objects.requireNonNull(errors.getFieldError())
+                                .getDefaultMessage())
+                        .orElse("Invalid Input requested"));
+            }
         }
+
     }
 
     private void chkEndTimeGreaterThanStartTime(final BookingInfo bookingInfo){

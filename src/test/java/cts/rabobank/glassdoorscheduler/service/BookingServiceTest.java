@@ -2,11 +2,15 @@ package cts.rabobank.glassdoorscheduler.service;
 
 import cts.rabobank.glassdoorscheduler.entity.*;
 import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
+import cts.rabobank.glassdoorscheduler.exception.MeetingRoomBookingException;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
+import cts.rabobank.glassdoorscheduler.util.BookingValidator;
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.validation.Errors;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
@@ -29,9 +33,12 @@ public class BookingServiceTest {
     @Mock
     UserInfoService userInfoService;
 
-    @Autowired
+    @Mock
+    BookingValidator bookingValidator;
+
     @InjectMocks
-    BookingService bookingService;
+    @Spy
+    BookingService bookingService = new BookingService();
 
     @BeforeEach
     public void init(){
@@ -50,17 +57,39 @@ public class BookingServiceTest {
     @Test
     @DisplayName("Add new meeting room schedule")
     public void testAddNewMeetingRoomSchedule(){
+
         doReturn(this.getRoomDetails()).when(roomInfoService).findByRoomId(anyLong());
         doReturn(this.getUserInfo()).when(userInfoService).findUserById(anyLong());
+        doNothing().when(bookingValidator).chkBookingRoomInputField(any(BookingInfo.class),any(Errors.class));
         when(bookingRepo.save(any())).thenReturn(new Booking());
-        //TODO check inner method mock
-        //doReturn(true).when(Mockito.spy(bookingService)).recordMeetingRoomBasedOnMode(any(),any(),any(),any());
+        when(bookingService.recordMeetingRoomBasedOnMode(any(Room.class),any(UserInfo.class),any(BookingInfo.class),anyInt())).thenReturn(true);
 
-        Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
-        UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
-       // Boolean savedBooking = bookingService.bookRoom(bookingInfo,null);
-        //TODO check book savings
-        //Assertions.assertEquals(true,savedBooking);
+        Boolean savedBooking = bookingService.bookRoom(bookingInfo,null);
+        Assertions.assertEquals(true,savedBooking);
+    }
+
+    @Test
+    @DisplayName("Handle the exception while booking the new meeting room")
+    public void testHandleExceptionWhileMeetingRoomSchedule(){
+
+        doReturn(this.getRoomDetails()).when(roomInfoService).findByRoomId(anyLong());
+        doReturn(this.getUserInfo()).when(userInfoService).findUserById(anyLong());
+        doNothing().when(bookingValidator).chkBookingRoomInputField(any(BookingInfo.class),any(Errors.class));
+        when(bookingRepo.save(any())).thenReturn(new Booking());
+        when(bookingService.recordMeetingRoomBasedOnMode(any(Room.class),any(UserInfo.class),any(BookingInfo.class),anyInt())).thenReturn(null);
+
+        MeetingRoomBookingException exceptionMessage = Assertions.assertThrows(MeetingRoomBookingException.class,()->{bookingService.bookRoom(bookingInfo,null);});
+        Assertions.assertEquals("Something went wrong while inserting the data into database",exceptionMessage.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("Number of recursion based on Mode")
+    public void testNoOfRecursionBasedOnMode(){
+        Assertions.assertEquals(7,bookingService.setNoOfRecursiveBasedOnMode("week"));
+        Assertions.assertEquals(30,bookingService.setNoOfRecursiveBasedOnMode("month"));
+        Assertions.assertEquals(1,bookingService.setNoOfRecursiveBasedOnMode("today"));
+        Assertions.assertEquals(1,bookingService.setNoOfRecursiveBasedOnMode("tomorrow"));
     }
 
     @Test
