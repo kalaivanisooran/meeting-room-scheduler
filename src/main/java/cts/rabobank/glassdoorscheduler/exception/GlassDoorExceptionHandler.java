@@ -22,7 +22,7 @@ public class GlassDoorExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(apiCustomMessage, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(value = { InvalidInputRequestException.class})
+	@ExceptionHandler(value = { InvalidInputRequestException.class, MeetingRoomBookingException.class})
 	public ResponseEntity<CustomMessage> handleInvalidInputRequestException(Exception exception){
 		log.debug("Exception: {}",exception.getMessage());
 		CustomMessage apiCustomMessage = new CustomMessage(HttpStatus.BAD_REQUEST.value(),exception.getMessage());

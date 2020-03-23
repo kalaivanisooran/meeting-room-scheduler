@@ -34,7 +34,7 @@ public class NewBookingController {
 	public ResponseEntity<CustomMessage> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
 
 		bookingValidator.chkBookingRoomInputField(bookingInfo, errors);
-		bookingService.bookRoom(bookingInfo);
+		bookingService.bookRoom(bookingInfo,errors);
 		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(), "Meeting room booked successfully"),
 				HttpStatus.OK);
 	}
