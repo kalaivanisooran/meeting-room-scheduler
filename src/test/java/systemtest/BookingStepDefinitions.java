@@ -25,7 +25,7 @@ public class BookingStepDefinitions extends AbstractSpringConfigurationTest {
 
     private final Logger log = LoggerFactory.getLogger(BookingStepDefinitions.class);
 
-    private static final String BOOKING_END_POINT ="/meetingroom/bookroom";
+    private static final String BOOKING_END_POINT ="/newmeetingroom/book";
 
     private ResponseEntity<String> response = null;
 

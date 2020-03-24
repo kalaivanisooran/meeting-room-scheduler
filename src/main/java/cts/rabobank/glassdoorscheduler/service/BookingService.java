@@ -46,42 +46,59 @@ public class BookingService {
 
 	public Boolean bookRoom(BookingInfo bookingInfo, Errors errors) {
 
-		bookingValidator.chkBookingRoomInputField(bookingInfo,errors);
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
 		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
-		return Optional.ofNullable(this.recordMeetingRoomBasedOnMode(room,userInfo,bookingInfo,this.setNoOfRecursiveBasedOnMode(bookingInfo.getMode())))
-				.orElseThrow(()->new MeetingRoomBookingException("Something went wrong while inserting the data into database"));
+		if(bookingInfo.getMode().equals("custom")){
+			return this.customMeetingRoomBooking(room,userInfo,bookingInfo);
+		}else{
+			return this.recordMeetingRoomBasedOnMode(room,userInfo,bookingInfo,this.setNoOfRecursiveBasedOnMode(bookingInfo.getMode()));
+		}
 	}
 
 
 	protected Boolean recordMeetingRoomBasedOnMode(Room room, UserInfo userInfo,BookingInfo bookingInfo,int noOfRecurrsive) {
 
-		LocalDate currentBookingDate = null;
-		if (bookingInfo!=null) {
-			currentBookingDate = bookingInfo.getBookingStartDate();
-		}
+		assert bookingInfo != null;
+		LocalDate currentBookingDate = bookingInfo.getBookingStartDate();
 
 		for (int i=0;i<noOfRecurrsive;i++){
 			currentBookingDate = (i == 0)?currentBookingDate: currentBookingDate.plusDays(1);
-			//TODO check the meeting room availabilty
-			try {
-				Booking booking = new Booking();
-				booking.setBookingStartDate(currentBookingDate);
-				booking.setBookingStartTime(bookingInfo.getBookingStartTime());
-				booking.setBookingEndTime(bookingInfo.getBookingEndTime());
-				booking.setRoomInfo(room);
-				booking.setPurpose(bookingInfo.getPurpose());
-				booking.setUserInfo(userInfo);
-				bookingrepo.save(booking);
-			} catch (Exception e) {
-				//TODO check and catch the exception type
-				logger.error("Something went wrong while inserting the data into database");
-				return null;
-			}
+			this.recordInDB(room,userInfo,bookingInfo,currentBookingDate);
 		}
+		return true;
+	}
+
+
+	protected Boolean customMeetingRoomBooking(Room room,UserInfo userInfo,BookingInfo bookingInfo){
+
+		if(bookingInfo.getCustomBookingDate() == null) {
+			throw new InvalidInputRequestException("Invalid. Custom meeting room Date should not be empty");
+		}
+
+		bookingInfo.getCustomBookingDate().forEach(customBookingDate->{
+			this.recordInDB(room,userInfo,bookingInfo,customBookingDate);
+		});
 
 		return true;
 	}
+
+	private void recordInDB(Room room,UserInfo userInfo,BookingInfo bookingInfo,LocalDate bookingDate){
+		try {
+			Booking booking = new Booking();
+			booking.setBookingStartDate(bookingDate);
+			booking.setBookingStartTime(bookingInfo.getBookingStartTime());
+			booking.setBookingEndTime(bookingInfo.getBookingEndTime());
+			booking.setRoomInfo(room);
+			booking.setPurpose(bookingInfo.getPurpose());
+			booking.setUserInfo(userInfo);
+			bookingrepo.save(booking);
+		} catch (Exception e) {
+			//TODO check and catch the exception type
+			logger.error("Something went wrong while inserting the data into database");
+			throw new MeetingRoomBookingException("Something went wrong while inserting the data into database");
+		}
+	}
+
 
 	protected int setNoOfRecursiveBasedOnMode(String mode){
 		int noOfRecurrsive;

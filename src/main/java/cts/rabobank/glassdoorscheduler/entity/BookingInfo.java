@@ -3,12 +3,10 @@ package cts.rabobank.glassdoorscheduler.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+import java.util.List;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
-
 import org.springframework.stereotype.Component;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,18 +19,15 @@ import lombok.Setter;
 @Setter
 public class BookingInfo implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@NotNull(message ="Room Id should not be empty")
 	private Integer roomId;
-  
-	//TODO Added this field newly to this class. Need to chk with others on the userId or UserName
+
 	@NotNull(message ="Employee Id should not be empty")
 	private int usrEmpId;
 
+	@NotNull(message ="StartDate should not be empty")
 	@FutureOrPresent(message = "Date must not be the past")
 	private LocalDate bookingStartDate;
 
@@ -41,10 +36,13 @@ public class BookingInfo implements Serializable{
 
 	@NotNull(message = "End Time should not be empty")
 	private LocalTime bookingEndTime;
-	
+
+	@NotNull(message = "Purpose should not be empty")
 	private String purpose;
 
-	@NotNull(message = "Mode should not be null")
+	@NotNull(message = "Mode should not be empty")
 	private String mode;
+
+	private List<LocalDate> customBookingDate;
 }
  
