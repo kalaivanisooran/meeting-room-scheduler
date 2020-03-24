@@ -21,9 +21,6 @@ import java.time.LocalTime;
 @ToString
 public class Booking implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -51,5 +48,4 @@ public class Booking implements Serializable {
 
 	@Column(name = "PURPOSE", nullable = false)
 	private String purpose;
-
 }
