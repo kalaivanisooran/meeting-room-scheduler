@@ -27,9 +27,9 @@ public class BookingInfo implements Serializable{
 	@NotNull(message ="Employee Id should not be empty")
 	private int usrEmpId;
 
-	@NotNull(message ="StartDate should not be empty")
-	@FutureOrPresent(message = "Date must not be the past")
-	private LocalDate bookingStartDate;
+	//@NotNull(message ="StartDate should not be empty")
+	//@FutureOrPresent(message = "Date must not be the past")
+	//private LocalDate bookingStartDate;
 
 	@NotNull(message = "Start Time should not be empty")
 	private LocalTime bookingStartTime;
@@ -37,12 +37,16 @@ public class BookingInfo implements Serializable{
 	@NotNull(message = "End Time should not be empty")
 	private LocalTime bookingEndTime;
 
-	@NotNull(message = "Purpose should not be empty")
-	private String purpose;
+	//@NotNull(message = "Purpose should not be empty")
+	//private String purpose;
+	
+	private int meetingTypeId;
 
-	@NotNull(message = "Mode should not be empty")
-	private String mode;
+	//@NotNull(message = "Mode should not be empty")
+	//private String mode;
 
 	private List<LocalDate> customBookingDate;
+	
+	private String bookingMode;
 }
  

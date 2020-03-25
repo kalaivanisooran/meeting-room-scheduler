@@ -15,7 +15,7 @@ import cts.rabobank.glassdoorscheduler.service.UserInfoService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/meetingroom")
+@RequestMapping("/meetingroomtesting")
 public class BookingController extends BookingValidator {
 
 	@Autowired

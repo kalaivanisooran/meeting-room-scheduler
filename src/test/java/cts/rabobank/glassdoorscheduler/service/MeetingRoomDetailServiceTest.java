@@ -2,6 +2,7 @@ package cts.rabobank.glassdoorscheduler.service;
 
 import cts.rabobank.glassdoorscheduler.entity.Booking;
 import cts.rabobank.glassdoorscheduler.entity.MeetingDetail;
+import cts.rabobank.glassdoorscheduler.entity.MeetingType;
 import cts.rabobank.glassdoorscheduler.entity.Room;
 import cts.rabobank.glassdoorscheduler.entity.UserInfo;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
@@ -75,7 +76,7 @@ public class MeetingRoomDetailServiceTest {
         Booking booking1 =new Booking();
         booking1.setRoomInfo(new Room(3L,"room1"));
         booking1.setUserInfo(new UserInfo());
-        booking1.setPurpose("Stand-up");
+        booking1.setMeetingType(new MeetingType(1L, "Stand-up"));
         booking1.setBookingStartDate(LocalDate.now());
         booking1.setBookingStartTime(LocalTime.of(11,30));
         booking1.setBookingEndTime(LocalTime.of(12,30));
@@ -83,7 +84,8 @@ public class MeetingRoomDetailServiceTest {
         Booking booking2 =new Booking();
         booking2.setRoomInfo(new Room(3L,"room2"));
         booking2.setUserInfo(new UserInfo());
-        booking2.setPurpose("Retro");
+       
+        booking2.setMeetingType(new MeetingType(1L, "Retro"));
         booking2.setBookingStartDate(LocalDate.now().plusDays(3));
         booking2.setBookingStartTime(LocalTime.of(10,30));
         booking2.setBookingEndTime(LocalTime.of(11,30));

@@ -36,7 +36,7 @@ public class MeetingRoomDetailService {
         singleBookingDetail.setBookingStartDate(booking.getBookingStartDate());
         singleBookingDetail.setBookingStartTime(booking.getBookingStartTime());
         singleBookingDetail.setBookingEndTime(booking.getBookingEndTime());
-        singleBookingDetail.setPurpose(booking.getPurpose());
+        singleBookingDetail.setPurpose(booking.getMeetingType().getPurpose());
 
        return singleBookingDetail;
     }

@@ -20,7 +20,7 @@ public class BookingValidator {
 
     public void chkBookingRoomInputField(final BookingInfo bookingInfo, final Errors errors){
         this.chkInputFieldHasError(errors);
-        this.chkInputModeType(bookingInfo.getMode());
+        this.chkInputModeType(bookingInfo.getBookingMode());
         this.chkEndTimeGreaterThanStartTime(bookingInfo);
         //TODO need to check the avaiablity
         //this.chkMeetingRoomAvailable(bookingInfo);
