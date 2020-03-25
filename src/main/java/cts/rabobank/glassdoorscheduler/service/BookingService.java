@@ -21,7 +21,6 @@ import cts.rabobank.glassdoorscheduler.entity.UserInfo;
 import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
 import cts.rabobank.glassdoorscheduler.repo.BookingPurposeRepo;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
-import org.springframework.validation.Errors;
 
 @Service
 @Transactional
@@ -44,7 +43,7 @@ public class BookingService {
 
 	private final Logger logger = LoggerFactory.getLogger(BookingService.class);
 
-	public Boolean bookRoom(BookingInfo bookingInfo, Errors errors) {
+	public Boolean bookRoom(BookingInfo bookingInfo) {
 
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
 		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
@@ -93,6 +92,7 @@ public class BookingService {
 			booking.setUserInfo(userInfo);
 			bookingrepo.save(booking);
 		} catch (Exception e) {
+			//ConstraintViolationException
 			//TODO check and catch the exception type
 			logger.error("Something went wrong while inserting the data into database");
 			throw new MeetingRoomBookingException("Something went wrong while inserting the data into database");
@@ -116,7 +116,6 @@ public class BookingService {
 		}
 		return noOfRecurrsive;
 	}
-
 
 
 

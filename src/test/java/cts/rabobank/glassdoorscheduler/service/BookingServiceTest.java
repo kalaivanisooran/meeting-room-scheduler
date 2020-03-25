@@ -61,7 +61,7 @@ public class BookingServiceTest {
         doNothing().when(bookingValidator).chkBookingRoomInputField(any(BookingInfo.class),any(Errors.class));
         when(bookingRepo.save(any())).thenReturn(new Booking());
 
-        Boolean savedBooking = bookingService.bookRoom(bookingInfo,null);
+        Boolean savedBooking = bookingService.bookRoom(bookingInfo);
         Assertions.assertEquals(true,savedBooking);
     }
 
@@ -74,7 +74,7 @@ public class BookingServiceTest {
         doNothing().when(bookingValidator).chkBookingRoomInputField(any(BookingInfo.class),any(Errors.class));
         doThrow(new RuntimeException()).when(bookingRepo).save(any());
 
-        MeetingRoomBookingException exceptionMessage = Assertions.assertThrows(MeetingRoomBookingException.class,()->{bookingService.bookRoom(bookingInfo,null);});
+        MeetingRoomBookingException exceptionMessage = Assertions.assertThrows(MeetingRoomBookingException.class,()->{bookingService.bookRoom(bookingInfo);});
         Assertions.assertEquals("Something went wrong while inserting the data into database",exceptionMessage.getMessage());
     }
 
