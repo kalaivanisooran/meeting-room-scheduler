@@ -2,6 +2,7 @@ package cts.rabobank.glassdoorscheduler.repo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,9 @@ public interface BookingRepo extends CrudRepository<Booking, Long>, JpaSpecifica
     @Modifying
     @Query("DELETE FROM Booking B WHERE B.id=:bookId")
     public void deleteById(@Param("bookId") Long bookId);
+
+    @Query("SELECT B FROM Booking B WHERE B.bookingStartDate >= sysdate()")
+    List<Booking> fetchBookingDetails();
 
 	//List<Booking> findAllByOrderByIdDesc(Specification<Booking> searchMeetingRooms);
 }
