@@ -13,13 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cts.rabobank.glassdoorscheduler.entity.Booking;
 import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
-import cts.rabobank.glassdoorscheduler.entity.BookingPurpose;
+import cts.rabobank.glassdoorscheduler.entity.MeetingType;
 import cts.rabobank.glassdoorscheduler.entity.Room;
 import cts.rabobank.glassdoorscheduler.entity.SearchResponse;
 import cts.rabobank.glassdoorscheduler.entity.Searching;
 import cts.rabobank.glassdoorscheduler.entity.UserInfo;
 import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
-import cts.rabobank.glassdoorscheduler.repo.BookingPurposeRepo;
+import cts.rabobank.glassdoorscheduler.repo.MeetingTypeRepo;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
 
 @Service
@@ -36,10 +36,13 @@ public class BookingService {
 	private BookingRepo bookingrepo;
 	
 	@Autowired
-	private BookingPurposeRepo bookingPurposeRepo;
+	private MeetingTypeRepo bookingPurposeRepo;
 
 	@Autowired
 	private BookingValidator bookingValidator;
+	
+	@Autowired
+	private MeetingTypeService meetingTypeService;
 
 	private final Logger logger = LoggerFactory.getLogger(BookingService.class);
 
@@ -47,48 +50,52 @@ public class BookingService {
 
 		Room room = roomInfoService.findByRoomId((long) bookingInfo.getRoomId());
 		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
-		if(bookingInfo.getMode().equals("custom")){
-			return this.customMeetingRoomBooking(room,userInfo,bookingInfo);
+		
+		MeetingType meetingType = meetingTypeService.findByMeetingTypeId((long)bookingInfo.getMeetingTypeId());
+		
+		if(bookingInfo.getBookingMode().equals("custom")){
+			return this.customMeetingRoomBooking(room,userInfo,meetingType, bookingInfo);
 		}else{
-			return this.recordMeetingRoomBasedOnMode(room,userInfo,bookingInfo,this.setNoOfRecursiveBasedOnMode(bookingInfo.getMode()));
+			return this.recordMeetingRoomBasedOnMode(room,userInfo, meetingType, bookingInfo,
+					this.setNoOfRecursiveBasedOnMode(bookingInfo.getBookingMode()));
 		}
 	}
 
 
-	protected Boolean recordMeetingRoomBasedOnMode(Room room, UserInfo userInfo,BookingInfo bookingInfo,int noOfRecurrsive) {
+	protected Boolean recordMeetingRoomBasedOnMode(Room room, UserInfo userInfo, MeetingType meetingType, BookingInfo bookingInfo,int noOfRecurrsive) {
 
 		assert bookingInfo != null;
 		LocalDate currentBookingDate = bookingInfo.getBookingStartDate();
 
 		for (int i=0;i<noOfRecurrsive;i++){
 			currentBookingDate = (i == 0)?currentBookingDate: currentBookingDate.plusDays(1);
-			this.recordInDB(room,userInfo,bookingInfo,currentBookingDate);
+			this.recordInDB(room,userInfo,meetingType,bookingInfo,currentBookingDate);
 		}
 		return true;
 	}
 
 
-	protected Boolean customMeetingRoomBooking(Room room,UserInfo userInfo,BookingInfo bookingInfo){
+	protected Boolean customMeetingRoomBooking(Room room,UserInfo userInfo,MeetingType meetingType, BookingInfo bookingInfo){
 
 		if(bookingInfo.getCustomBookingDate() == null) {
 			throw new InvalidInputRequestException("Invalid. Custom meeting room Date should not be empty");
 		}
 
 		bookingInfo.getCustomBookingDate().forEach(customBookingDate->{
-			this.recordInDB(room,userInfo,bookingInfo,customBookingDate);
+			this.recordInDB(room,userInfo,meetingType,bookingInfo,customBookingDate);
 		});
 
 		return true;
 	}
 
-	private void recordInDB(Room room,UserInfo userInfo,BookingInfo bookingInfo,LocalDate bookingDate){
+	private void recordInDB(Room room,UserInfo userInfo,MeetingType meetingType, BookingInfo bookingInfo,LocalDate bookingDate){
 		try {
 			Booking booking = new Booking();
 			booking.setBookingStartDate(bookingDate);
 			booking.setBookingStartTime(bookingInfo.getBookingStartTime());
 			booking.setBookingEndTime(bookingInfo.getBookingEndTime());
 			booking.setRoomInfo(room);
-			booking.setPurpose(bookingInfo.getPurpose());
+			booking.setMeetingType(meetingType);
 			booking.setUserInfo(userInfo);
 			bookingrepo.save(booking);
 		} catch (Exception e) {
@@ -187,7 +194,7 @@ public class BookingService {
 //		return canBook;
 //	}
 	
-	public List<BookingPurpose> fetchAllBookingPurposes() {
+	public List<MeetingType> fetchAllBookingPurposes() {
 		return bookingPurposeRepo.findAll();
 	}
 

@@ -1,16 +1,26 @@
 package cts.rabobank.glassdoorscheduler.entity;
 
-import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "BOOKING_INFO")
@@ -43,9 +53,12 @@ public class Booking implements Serializable {
 	@Column(name = "CREATEDON", nullable = false)
 	private Timestamp createdOn;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private UserInfo userInfo;
-
-	@Column(name = "PURPOSE", nullable = false)
-	private String purpose;
+	
+	//@Column(name = "PURPOSE", nullable = false)
+	//private String purpose;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	private MeetingType meetingType;
 }

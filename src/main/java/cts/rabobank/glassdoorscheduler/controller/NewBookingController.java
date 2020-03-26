@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import cts.rabobank.glassdoorscheduler.entity.BookingInfo;
-import cts.rabobank.glassdoorscheduler.entity.BookingPurpose;
+import cts.rabobank.glassdoorscheduler.entity.MeetingType;
 import cts.rabobank.glassdoorscheduler.service.BookingService;
 import cts.rabobank.glassdoorscheduler.util.BookingValidator;
 import cts.rabobank.glassdoorscheduler.util.CustomMessage;
 
 @RestController
-@RequestMapping("/newmeetingroom")
+@RequestMapping("/meetingroom")
 public class NewBookingController {
 
 	@Autowired
@@ -46,11 +46,11 @@ public class NewBookingController {
     @GetMapping(value = "/fetchBookingPurposes")
 	public ResponseEntity<?> listAllBookingPurposes() {
 		
-		List<BookingPurpose> bookingPurposeList = bookingService.fetchAllBookingPurposes();
+		List<MeetingType> bookingPurposeList = bookingService.fetchAllBookingPurposes();
 		if (bookingPurposeList.isEmpty()) {
 			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "No Purpose found"), HttpStatus.OK);
 		}
-		return new ResponseEntity<List<BookingPurpose>>(bookingPurposeList, HttpStatus.OK);
+		return new ResponseEntity<List<MeetingType>>(bookingPurposeList, HttpStatus.OK);
 	}
 
 	@GetMapping(value="/getmeetingdetails", produces = "application/json")

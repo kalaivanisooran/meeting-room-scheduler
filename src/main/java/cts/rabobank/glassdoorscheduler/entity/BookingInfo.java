@@ -17,17 +17,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BookingInfo implements Serializable{
+public class BookingInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotNull(message ="Room Id should not be empty")
+	@NotNull(message = "Room Id should not be empty")
 	private Integer roomId;
 
-	@NotNull(message ="Employee Id should not be empty")
+	@NotNull(message = "Employee Id should not be empty")
 	private int usrEmpId;
 
-	@NotNull(message ="StartDate should not be empty")
+	@NotNull(message = "StartDate should not be empty")
 	@FutureOrPresent(message = "Date must not be the past")
 	private LocalDate bookingStartDate;
 
@@ -38,11 +38,10 @@ public class BookingInfo implements Serializable{
 	private LocalTime bookingEndTime;
 
 	@NotNull(message = "Purpose should not be empty")
-	private String purpose;
-
-	@NotNull(message = "Mode should not be empty")
-	private String mode;
+	private int meetingTypeId;
 
 	private List<LocalDate> customBookingDate;
+
+	@NotNull(message = "bookingmode should not be empty")
+	private String bookingMode;
 }
- 

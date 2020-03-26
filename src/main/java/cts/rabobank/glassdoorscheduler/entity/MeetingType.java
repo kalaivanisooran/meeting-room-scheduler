@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,9 +17,10 @@ import lombok.ToString;
 @Table(name = "BOOKING_PURPOSE")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class BookingPurpose {
+public class MeetingType {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

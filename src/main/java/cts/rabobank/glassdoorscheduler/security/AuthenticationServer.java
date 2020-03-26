@@ -99,20 +99,20 @@ public class AuthenticationServer extends WebSecurityConfigurerAdapter{
 			         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			     .and()
 		            .authorizeRequests()
-		            .antMatchers("/openapi/**","/oauth/token","/h2/**","/meetingroom/**")
+		            .antMatchers("/openapi/**","/oauth/token","/h2/**","/meetingroom/**", "/room/**")
 		            .permitAll()
 		            .anyRequest()
 		            .authenticated();
 		            
 	}
-	
+	 
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		log.info("WebSecurity Nothing Configured =================> ");
 	    web.ignoring()
 		        .antMatchers(HttpMethod.OPTIONS, "/**")
-		        .antMatchers("/openapi/**","/h2/**","/meetingroom/**")
+		        .antMatchers("/openapi/**","/h2/**","/meetingroom/**", "/room/**")
 		        .antMatchers("/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
