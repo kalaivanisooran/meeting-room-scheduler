@@ -65,7 +65,7 @@ public class BookingService {
 	protected Boolean recordMeetingRoomBasedOnMode(Room room, UserInfo userInfo, MeetingType meetingType, BookingInfo bookingInfo,int noOfRecurrsive) {
 
 		assert bookingInfo != null;
-		LocalDate currentBookingDate = LocalDate.now(); 
+		LocalDate currentBookingDate = bookingInfo.getBookingStartDate();
 
 		for (int i=0;i<noOfRecurrsive;i++){
 			currentBookingDate = (i == 0)?currentBookingDate: currentBookingDate.plusDays(1);

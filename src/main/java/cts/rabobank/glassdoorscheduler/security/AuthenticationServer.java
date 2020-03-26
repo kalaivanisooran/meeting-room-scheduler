@@ -105,7 +105,7 @@ public class AuthenticationServer extends WebSecurityConfigurerAdapter{
 		            .authenticated();
 		            
 	}
-	
+	 
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {

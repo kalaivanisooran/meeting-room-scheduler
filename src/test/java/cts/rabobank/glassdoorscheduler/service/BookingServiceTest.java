@@ -48,7 +48,7 @@ public class BookingServiceTest {
 		bookingInfo = new BookingInfo();
 		bookingInfo.setRoomId(1);
 		bookingInfo.setUsrEmpId(1234);
-		// bookingInfo.setBookingStartDate(LocalDate.now());
+		bookingInfo.setBookingStartDate(LocalDate.now());
 		bookingInfo.setBookingStartTime(LocalTime.now());
 		bookingInfo.setBookingEndTime(LocalTime.now().plusHours(1));
 		bookingInfo.setMeetingTypeId(1);
