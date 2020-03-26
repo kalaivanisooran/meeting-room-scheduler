@@ -47,6 +47,7 @@ public class BookingInfo implements Serializable{
 
 	private List<LocalDate> customBookingDate;
 	
+	@NotNull(message = "bookingmode should not be empty")
 	private String bookingMode;
 }
  
