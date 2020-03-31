@@ -1,5 +1,6 @@
 package cts.rabobank.glassdoorscheduler.service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,15 +63,22 @@ public class BookingService {
 	}
 
 
-	protected Boolean recordMeetingRoomBasedOnMode(Room room, UserInfo userInfo, MeetingType meetingType, BookingInfo bookingInfo,int noOfRecurrsive) {
+	protected Boolean recordMeetingRoomBasedOnMode(Room room, UserInfo userInfo, MeetingType meetingType,
+			BookingInfo bookingInfo, int noOfRecurrsive) {
 
 		assert bookingInfo != null;
 		LocalDate currentBookingDate = bookingInfo.getBookingStartDate();
 
-		for (int i=0;i<noOfRecurrsive;i++){
-			currentBookingDate = (i == 0)?currentBookingDate: currentBookingDate.plusDays(1);
-			this.recordInDB(room,userInfo,meetingType,bookingInfo,currentBookingDate);
+		int i = 0;
+		while (i < noOfRecurrsive) {
+			if (!(currentBookingDate.getDayOfWeek() == DayOfWeek.SATURDAY
+					|| currentBookingDate.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+				this.recordInDB(room, userInfo, meetingType, bookingInfo, currentBookingDate);
+				++i;
+			}
+			currentBookingDate = currentBookingDate.plusDays(1);
 		}
+
 		return true;
 	}
 
