@@ -58,7 +58,7 @@ public class BookingService {
 			return this.customMeetingRoomBooking(room,userInfo,meetingType, bookingInfo);
 		}else{
 			return this.recordMeetingRoomBasedOnMode(room,userInfo, meetingType, bookingInfo,
-					this.setNoOfRecursiveBasedOnMode(bookingInfo.getBookingMode()));
+					this.setNoOfRecursiveBasedOnMode(bookingInfo.getBookingMode(),bookingInfo.getNoOfWeeks()));
 		}
 	}
 
@@ -115,12 +115,12 @@ public class BookingService {
 	}
 
 
-	protected int setNoOfRecursiveBasedOnMode(String mode){
+	protected int setNoOfRecursiveBasedOnMode(String mode,int noOfWeeks){
 		int noOfRecurrsive;
 
 		switch (mode) {
 			case "week":
-				noOfRecurrsive = 7;
+				noOfRecurrsive = 5*noOfWeeks;
 				break;
 			case "month":
 				noOfRecurrsive = 30;
