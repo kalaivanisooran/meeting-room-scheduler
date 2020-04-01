@@ -5,6 +5,8 @@ import cts.rabobank.glassdoorscheduler.exception.InvalidInputRequestException;
 import cts.rabobank.glassdoorscheduler.exception.MeetingRoomBookingException;
 import cts.rabobank.glassdoorscheduler.repo.BookingRepo;
 import cts.rabobank.glassdoorscheduler.util.BookingValidator;
+import cts.rabobank.glassdoorscheduler.util.Util;
+
 import org.junit.jupiter.api.*;
 import org.mockito.*;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -88,10 +90,10 @@ public class BookingServiceTest {
 	@Test
 	@DisplayName("Number of recursion based on Mode")
 	public void testNoOfRecursionBasedOnMode() {
-		Assertions.assertEquals(7, bookingService.setNoOfRecursiveBasedOnMode("week"));
-		Assertions.assertEquals(30, bookingService.setNoOfRecursiveBasedOnMode("month"));
-		Assertions.assertEquals(1, bookingService.setNoOfRecursiveBasedOnMode("today"));
-		Assertions.assertEquals(1, bookingService.setNoOfRecursiveBasedOnMode("tomorrow"));
+		Assertions.assertEquals(7, Util.setNoOfRecursiveBasedOnMode("week"));
+		Assertions.assertEquals(30, Util.setNoOfRecursiveBasedOnMode("month"));
+		Assertions.assertEquals(1, Util.setNoOfRecursiveBasedOnMode("today"));
+		Assertions.assertEquals(1, Util.setNoOfRecursiveBasedOnMode("tomorrow"));
 	}
 
 	@Test

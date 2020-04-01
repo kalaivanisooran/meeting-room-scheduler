@@ -25,10 +25,12 @@ public class BookingInfo implements Serializable {
 	private Integer roomId;
 
 	@NotNull(message = "Employee Id should not be empty")
-	private int usrEmpId;
+	private Integer usrEmpId;
 
-	@NotNull(message = "StartDate should not be empty")
-	@FutureOrPresent(message = "Date must not be the past")
+	//@NotNull(message = "StartDate should not be empty")
+	//@FutureOrPresent(message = "Date must not be the past")
+	//Start will be empty in custom booking case
+	//Non null check will be added manually for non custom booking case. 
 	private LocalDate bookingStartDate;
 
 	@NotNull(message = "Start Time should not be empty")
