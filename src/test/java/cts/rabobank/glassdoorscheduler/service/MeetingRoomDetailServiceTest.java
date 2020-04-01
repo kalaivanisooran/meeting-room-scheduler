@@ -46,7 +46,7 @@ public class MeetingRoomDetailServiceTest {
 
         when(bookingRepo.fetchBookingDetails()).thenReturn(this.getBookingSampleData());
 
-        List<MeetingDetail> meetingDetails = meetingRoomDetailService.getMeetingRoomDetails();
+        List<MeetingDetail> meetingDetails = meetingRoomDetailService.getAllMeetingRoomDetails();
         Assertions.assertEquals(2,meetingDetails.size());
         Assertions.assertEquals(LocalDate.now(),meetingDetails.get(0).getBookingStartDate());
     }
@@ -56,7 +56,7 @@ public class MeetingRoomDetailServiceTest {
     public void testWhenMeetingRoomDetailIsEmpty(){
         when(bookingRepo.findAll()).thenReturn(new ArrayList<>());
 
-        List<MeetingDetail> meetingDetails = meetingRoomDetailService.getMeetingRoomDetails();
+        List<MeetingDetail> meetingDetails = meetingRoomDetailService.getAllMeetingRoomDetails();
         Assertions.assertTrue(meetingDetails.isEmpty());
         Assertions.assertEquals(0,meetingDetails.size());
     }

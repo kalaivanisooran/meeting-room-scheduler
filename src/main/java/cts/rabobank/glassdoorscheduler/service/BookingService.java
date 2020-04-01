@@ -8,6 +8,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import cts.rabobank.glassdoorscheduler.exception.MeetingRoomBookingException;
 import cts.rabobank.glassdoorscheduler.util.BookingValidator;
+import cts.rabobank.glassdoorscheduler.util.Util;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +60,7 @@ public class BookingService {
 			return this.customMeetingRoomBooking(room,userInfo,meetingType, bookingInfo);
 		}else{
 			return this.recordMeetingRoomBasedOnMode(room,userInfo, meetingType, bookingInfo,
-					this.setNoOfRecursiveBasedOnMode(bookingInfo.getBookingMode()));
+					Util.setNoOfRecursiveBasedOnMode(bookingInfo.getBookingMode()));
 		}
 	}
 
@@ -113,37 +115,6 @@ public class BookingService {
 			throw new MeetingRoomBookingException("Something went wrong while inserting the data into database");
 		}
 	}
-
-
-	protected int setNoOfRecursiveBasedOnMode(String mode){
-		int noOfRecurrsive;
-
-		switch (mode) {
-			case "week":
-				noOfRecurrsive = 7;
-				break;
-			case "month":
-				noOfRecurrsive = 30;
-				break;
-			default:
-				noOfRecurrsive = 1;
-				break;
-		}
-		return noOfRecurrsive;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 	public void cancelMeetingRoom(Long bookingId) {

@@ -28,13 +28,13 @@ public class NewBookingController {
 	@Autowired
 	private BookingValidator bookingValidator;
 
-    @Autowired
-    private BookingService bookingService;
+	@Autowired
+	private BookingService bookingService;
 
-    @Autowired
+	@Autowired
 	private MeetingRoomDetailService meetingRoomDetailService;
-    
-    @PostMapping(value = "/book", consumes = "application/json", produces = "application/json")
+
+	@PostMapping(value = "/book", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<CustomMessage> bookRoom(@Valid @RequestBody BookingInfo bookingInfo, Errors errors) {
 
 		bookingValidator.chkBookingRoomInputField(bookingInfo, errors);
@@ -42,10 +42,10 @@ public class NewBookingController {
 		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(), "Meeting room booked successfully"),
 				HttpStatus.OK);
 	}
-    
-    @GetMapping(value = "/fetchBookingPurposes")
+
+	@GetMapping(value = "/fetchBookingPurposes")
 	public ResponseEntity<?> listAllBookingPurposes() {
-		
+
 		List<MeetingType> bookingPurposeList = bookingService.fetchAllBookingPurposes();
 		if (bookingPurposeList.isEmpty()) {
 			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "No Purpose found"), HttpStatus.OK);
@@ -56,10 +56,22 @@ public class NewBookingController {
 	@GetMapping(value="/getmeetingdetails", produces = "application/json")
 	public ResponseEntity<?> getAllMeetingRoomDetails() {
 
-		List<MeetingDetail> meetingDetailRecord = meetingRoomDetailService.getMeetingRoomDetails();
+		List<MeetingDetail> meetingDetailRecord = meetingRoomDetailService.getAllMeetingRoomDetails();
 		if (meetingDetailRecord.isEmpty()) {
 			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "Meeting Room Details are not available"), HttpStatus.OK);
 		}
 		return new ResponseEntity<List<MeetingDetail>>(meetingDetailRecord, HttpStatus.OK);
 	}
+
+
+	@PostMapping(value="/getmeetingdetails", produces = "application/json")
+	public ResponseEntity<?> getMeetingRoomDetails(@RequestBody BookingInfo bookingInfo) {
+
+		List<MeetingDetail> meetingDetailRecord = meetingRoomDetailService.getMeetingRoomDetails(bookingInfo);
+		if (meetingDetailRecord.isEmpty()) {
+			return new ResponseEntity<CustomMessage>(new CustomMessage(HttpStatus.OK.value(), "Meeting Room Details are not available"), HttpStatus.OK);
+		}
+		return new ResponseEntity<List<MeetingDetail>>(meetingDetailRecord, HttpStatus.OK);
+	}
+
 }
