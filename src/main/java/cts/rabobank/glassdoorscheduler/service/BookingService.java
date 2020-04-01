@@ -2,8 +2,10 @@ package cts.rabobank.glassdoorscheduler.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import cts.rabobank.glassdoorscheduler.exception.MeetingRoomBookingException;
@@ -53,12 +55,44 @@ public class BookingService {
 		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
 		
 		MeetingType meetingType = meetingTypeService.findByMeetingTypeId((long)bookingInfo.getMeetingTypeId());
-		
-		if(bookingInfo.getBookingMode().equals("custom")){
-			return this.customMeetingRoomBooking(room,userInfo,meetingType, bookingInfo);
-		}else{
-			return this.recordMeetingRoomBasedOnMode(room,userInfo, meetingType, bookingInfo,
-					this.setNoOfRecursiveBasedOnMode(bookingInfo.getBookingMode()));
+
+		LocalDate bookDate = bookingInfo.getBookingStartDate();
+		Long roomId = Long.valueOf(bookingInfo.getRoomId());
+		LocalTime fTime = bookingInfo.getBookingStartTime();
+		LocalTime eTime = bookingInfo.getBookingEndTime();
+
+		List<Booking> alreadyBookedRoomsList = bookingrepo.doBookingSlotAvailable(bookDate,  roomId, fTime, eTime);
+
+		List<BookingInfo> newBookingInfo =  Arrays.asList(new BookingInfo[] {bookingInfo});
+
+		boolean checkRoomAlreadyBookedOrNot = alreadyBookedRoomsList.stream().anyMatch(listSeqData -> (listSeqData.getRoomInfo().getId() == Long.valueOf(bookingInfo.getRoomId())) &&
+				(listSeqData.getBookingStartDate().compareTo(bookingInfo.getBookingStartDate()) == 0 ) &&
+				(listSeqData.getBookingStartTime().compareTo(bookingInfo.getBookingStartTime()) == 0 || listSeqData.getBookingStartTime().compareTo(bookingInfo.getBookingStartTime()) < 0 ||
+						listSeqData.getBookingStartTime().compareTo(bookingInfo.getBookingStartTime()) > 0)  &&
+				(listSeqData.getBookingEndTime().compareTo(bookingInfo.getBookingEndTime()) == 0 || listSeqData.getBookingEndTime().compareTo(bookingInfo.getBookingEndTime()) < 0  ||
+						listSeqData.getBookingEndTime().compareTo(bookingInfo.getBookingEndTime()) > 0) );
+
+		logger.info("Whether Room is available or not ? "+checkRoomAlreadyBookedOrNot);
+
+		if(alreadyBookedRoomsList.isEmpty()) {
+			logger.info("First time booking	");
+			if (bookingInfo.getBookingMode().equals("custom")) {
+				return this.customMeetingRoomBooking(room, userInfo, meetingType, bookingInfo);
+			} else {
+				return this.recordMeetingRoomBasedOnMode(room, userInfo, meetingType, bookingInfo,
+						this.setNoOfRecursiveBasedOnMode(bookingInfo.getBookingMode()));
+			}
+		}
+
+		if(!checkRoomAlreadyBookedOrNot) {
+			if (bookingInfo.getBookingMode().equals("custom")) {
+				return this.customMeetingRoomBooking(room, userInfo, meetingType, bookingInfo);
+			} else {
+				return this.recordMeetingRoomBasedOnMode(room, userInfo, meetingType, bookingInfo,
+						this.setNoOfRecursiveBasedOnMode(bookingInfo.getBookingMode()));
+			}
+		} else {
+			return false;
 		}
 	}
 

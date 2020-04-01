@@ -39,8 +39,15 @@ public class NewBookingController {
 
 		bookingValidator.chkBookingRoomInputField(bookingInfo, errors);
 		bookingService.bookRoom(bookingInfo);
-		return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(), "Meeting room booked successfully"),
-				HttpStatus.OK);
+		boolean roomBooked = bookingService.bookRoom(bookingInfo);
+
+		if(roomBooked) {
+			return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(), "Meeting room booked successfully"),
+					HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(new CustomMessage(HttpStatus.OK.value(), "Meeting room Already booked for this time. Choose Some other convient time."),
+					HttpStatus.OK);
+		}
 	}
     
     @GetMapping(value = "/fetchBookingPurposes")
