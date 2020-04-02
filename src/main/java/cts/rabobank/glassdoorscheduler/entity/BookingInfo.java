@@ -44,4 +44,6 @@ public class BookingInfo implements Serializable {
 
 	@NotNull(message = "bookingmode should not be empty")
 	private String bookingMode;
+	
+	private int noOfWeeks;
 }

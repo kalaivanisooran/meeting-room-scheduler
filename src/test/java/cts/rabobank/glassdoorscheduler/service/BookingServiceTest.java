@@ -53,6 +53,7 @@ public class BookingServiceTest {
 		bookingInfo.setBookingEndTime(LocalTime.now().plusHours(1));
 		bookingInfo.setMeetingTypeId(1);
 		bookingInfo.setBookingMode("week");
+		bookingInfo.setNoOfWeeks(2);
 	}
 
 	@Test
@@ -88,10 +89,10 @@ public class BookingServiceTest {
 	@Test
 	@DisplayName("Number of recursion based on Mode")
 	public void testNoOfRecursionBasedOnMode() {
-		Assertions.assertEquals(7, bookingService.setNoOfRecursiveBasedOnMode("week"));
-		Assertions.assertEquals(30, bookingService.setNoOfRecursiveBasedOnMode("month"));
-		Assertions.assertEquals(1, bookingService.setNoOfRecursiveBasedOnMode("today"));
-		Assertions.assertEquals(1, bookingService.setNoOfRecursiveBasedOnMode("tomorrow"));
+		Assertions.assertEquals(10, bookingService.setNoOfRecursiveBasedOnMode("week",2));
+		Assertions.assertEquals(30, bookingService.setNoOfRecursiveBasedOnMode("month",2));
+		Assertions.assertEquals(1, bookingService.setNoOfRecursiveBasedOnMode("today",2));
+		Assertions.assertEquals(1, bookingService.setNoOfRecursiveBasedOnMode("tomorrow",2));
 	}
 
 	@Test

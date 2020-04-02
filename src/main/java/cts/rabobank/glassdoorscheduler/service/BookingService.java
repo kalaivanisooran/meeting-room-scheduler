@@ -55,7 +55,7 @@ public class BookingService {
 		UserInfo userInfo = userInfoService.findUserById((long) bookingInfo.getUsrEmpId());
 		
 		MeetingType meetingType = meetingTypeService.findByMeetingTypeId((long)bookingInfo.getMeetingTypeId());
-
+    
 		LocalDate bookDate = bookingInfo.getBookingStartDate();
 		Long roomId = Long.valueOf(bookingInfo.getRoomId());
 		LocalTime fTime = bookingInfo.getBookingStartTime();
@@ -92,7 +92,7 @@ public class BookingService {
 						this.setNoOfRecursiveBasedOnMode(bookingInfo.getBookingMode()));
 			}
 		} else {
-			return false;
+			return false; 
 		}
 	}
 
@@ -149,12 +149,12 @@ public class BookingService {
 	}
 
 
-	protected int setNoOfRecursiveBasedOnMode(String mode){
+	protected int setNoOfRecursiveBasedOnMode(String mode,int noOfWeeks){
 		int noOfRecurrsive;
 
 		switch (mode) {
 			case "week":
-				noOfRecurrsive = 7;
+				noOfRecurrsive = 5*noOfWeeks;
 				break;
 			case "month":
 				noOfRecurrsive = 30;
